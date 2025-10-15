@@ -7,4 +7,5 @@ requires-python = ">=3.12"
 dependencies = [
     "apache-airflow==3.0.0",
     "apache-airflow-providers-amazon>=9.15.0",
+    "pandas>=2.3.3",
 ]

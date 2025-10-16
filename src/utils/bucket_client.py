@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv(BASE_DIR / ".env")
 
 
-class BucketClient:
+class S3BucketClient:
     """
         Basic S3 Client for reading, writing, and appending JSONL files.
         Args:
@@ -184,7 +184,7 @@ class BucketClient:
 
 if __name__ == "__main__":
     
-    epc_s3_client = BucketClient(
+    epc_s3_client = S3BucketClient(
         bucket_name=os.getenv("AWS_BUCKET_NAME"),
         aws_access_key_id=os.getenv("AWS_S3_KEY"),
         aws_secret_access_key=os.getenv("AWS_S3_PASSWORD"),

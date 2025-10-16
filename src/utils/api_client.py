@@ -150,12 +150,65 @@ class EPCAPIClient:
             logger.error(f"Failed to parse CSV: {e}")
             return []
 
+    def get_file_list(self) -> Dict[str, Dict[str, int]]:
+        """
+            Execute GET request to get list of available zip files for download and their sizes
+        """
+
+        endpoint = "/files"
+        url = str.rstrip(self.base_url) + "/" + str.lstrip(endpoint, "/")
+        attempt = 0
+        headers_copy = self.headers.copy()
+        if self.headers.get("accept") != "application/json":
+            headers_copy["accept"] = "application/json"
+
+        while attempt < self.max_retries:
+            try:
+                logger.info(f"GET {url} (Attempt {attempt + 1}/{self.max_retries})")
+                response = requests.get(
+                    url,
+                    headers=headers_copy,
+                    timeout=self.timeout
+                )
+
+                response.raise_for_status()
+                data = response.json()['files']
+
+                logger.info(f"Successfully fetched from {endpoint}")
+                return data
+            
+            except requests.exceptions.HTTPError as e:
+                logger.error(f"HTTP {response.status_code} while calling {url}: {e}")
+                break
+
+            except requests.exceptions.Timeout:
+                logger.warning(f"Timeout calling {url}, retrying...")
+                attempt += 1
+                time.sleep(self.backoff ** attempt)
+                continue
+            
+            except requests.exceptions.RequestException as e:
+                attempt += 1
+                if attempt >= self.max_retries:
+                    logger.error(f"Failed after {self.max_retries} attempts: {str(e)}")
+                    break
+                sleep_time = self.backoff ** attempt
+                logger.warning(f"Retrying in {sleep_time} seconds...")
+                time.sleep(sleep_time)
+            
+            except Exception as e:
+                logger.exception(f"Unexpected error: {str(e)}")
+                break
+
+        return None
+
     def get_file(self, filename: str, folder_path: str = "api_datasets/bulk_download/zips") -> bool:
         """
             Execute GET request download required bulk file
 
             Args:
-                filename
+                filename (str): The name of the file to download.
+                folder_path (str): The folder path to save the downloaded file.
             
             Returns:
                 Any: the dataset zip file
@@ -166,13 +219,23 @@ class EPCAPIClient:
 
         endpoint = f"/files/{filename}"
         url = str.rstrip(self.base_url) + "/" + str.lstrip(endpoint, "/")
+        headers_copy = self.headers.copy()
+        if self.headers.get("accept") != "*/*":
+            headers_copy["accept"] = "*/*"
 
-        folder = Path(BASE_DIR / folder_path)
-        folder.mkdir(parents=True, exist_ok=True)
-        output_path = folder / filename
+        folder_path = Path(folder_path)
+        # Determine if destination should be treated as a directory
+        if folder_path.exists() and folder_path.is_dir():
+            output_path = folder_path / filename
+        elif str(folder_path).endswith(os.sep) or folder_path.suffix == "": 
+            # os.sep is the path separator used by your operating system "/" or "\"
+            # Treat as directory path even if it doesn't exist yet
+            folder_path.mkdir(parents=True, exist_ok=True)
+            output_path = folder_path / filename
+        else: # if path given allong with filename
+            folder_path.parent.mkdir(parents=True, exist_ok=True)
+            output_path = folder_path
         logger.info(f"output path set to {output_path}")
-
-        headers["accept"] = "*/*"  # Override Accept header for file download
         attempt = 0
         
         with requests.Session() as session:
@@ -181,7 +244,7 @@ class EPCAPIClient:
                     logger.info(f"Downloading file from {url} to {output_path} (Attempt {attempt + 1}/{self.max_retries})")
                     with session.get(
                         url,
-                        headers=self.headers,  # Remove Accept header for file download
+                        headers=headers_copy,
                         timeout=self.timeout,
                         stream=True,
                         allow_redirects=True
@@ -239,5 +302,8 @@ if __name__ == "__main__":
     # print(response)
 
 
-    response = client.get_file("display-E07000103-Watford")
-    print(response)
+    # result = client.get_file("display-E07000103-Watford")
+    # print(result)
+
+    file_list = client.get_file_list()
+    print(file_list)

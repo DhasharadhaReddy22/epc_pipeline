@@ -7,16 +7,13 @@ from io import StringIO
 from typing import Any, Dict, List
 from dotenv import load_dotenv
 from pathlib import Path
-import logging
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="[%(levelname)s | %(name)s | %(asctime)s] - [%(filename)s | %(module)s | %(funcName)s | L%(lineno)d] : %(message)s"
-)
-logger = logging.getLogger(__name__)
+from src.utils.logger import get_logger
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv(BASE_DIR / ".env")
+
+logger = get_logger("src.utils.api_client", log_dir=BASE_DIR / "logs", log_file="api_client.log")
 
 class EPCAPIClient:
     """

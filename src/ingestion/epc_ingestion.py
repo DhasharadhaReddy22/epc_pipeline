@@ -8,18 +8,16 @@ import time
 from src.utils.api_client import EPCAPIClient
 from src.utils.bucket_client import S3BucketClient
 from src.utils.file_ops import extract_zip, move_file, delete_directory
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="[%(levelname)s | %(name)s | %(asctime)s] - [%(filename)s | %(module)s | %(funcName)s | L%(lineno)d] : %(message)s"
-)
-logger = logging.getLogger(__name__)
+from src.utils.logger import get_logger
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+LOG_DIR = BASE_DIR / "logs"
 DATA_DIR = BASE_DIR / "api_datasets"
 DATASET_DIR = DATA_DIR / "bulk_download"
 ZIP_DIR = DATASET_DIR / "zips"
 PROCESSED_DIR = DATASET_DIR / "processed"
+
+logger = get_logger("src.ingestion.epc_ingestion", log_dir=LOG_DIR, log_file="epc_ingestion.log")
 
 load_dotenv(BASE_DIR / ".env")
 

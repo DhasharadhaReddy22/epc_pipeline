@@ -8,15 +8,12 @@ import boto3
 import pandas as pd
 from botocore.exceptions import ClientError
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="[%(levelname)s | %(asctime)s] - [%(filename)s | %(funcName)s | L%(lineno)d] : %(message)s"
-)
-logger = logging.getLogger(__name__)
+from src.utils.logger import get_logger
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 load_dotenv(BASE_DIR / ".env")
 
+logger = get_logger("src.utils.bucket_client", log_dir=BASE_DIR / "logs", log_file="bucket_client.log")
 
 class S3BucketClient:
     """

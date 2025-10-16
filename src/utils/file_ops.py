@@ -3,13 +3,11 @@ import shutil
 import zipfile
 import logging
 from pathlib import Path
-from typing import Optional, List
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="[%(levelname)s | %(name)s | %(asctime)s] - [%(filename)s | %(funcName)s | L%(lineno)d] : %(message)s"
-)
-logger = logging.getLogger(__name__)
+from src.utils.logger import get_logger
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+logger = get_logger("src.utils.file_ops", log_dir=BASE_DIR / "logs", log_file="file_ops.log")
 
 def extract_zip(zip_path: str | Path, dest_dir: str | Path = "/home/dhasharadhareddyb/projects/epc_pipeline/api_datasets/bulk_download/unzipped") -> bool:
     """

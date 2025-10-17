@@ -1,0 +1,13 @@
+dbt_epc:
+  outputs:
+    dev:
+      account: 
+      database: EPC_DB
+      password: epc_dbt#123
+      role: TRANSFORM
+      schema: RAW
+      threads: 6
+      type: snowflake
+      user: epc_dbt
+      warehouse: COMPUTE_WH
+  target: dev

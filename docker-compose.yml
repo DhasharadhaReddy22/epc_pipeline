@@ -1,0 +1,68 @@
+services:
+  postgres:
+    container_name: postgres
+    hostname: postgres
+    image: postgres:14.18
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      epc-network:
+        aliases:
+          - db
+  
+  airflow:
+    container_name: airflow
+    image: apache/airflow:3.0.0
+    ports:
+      - 8080:8080
+    env_file:
+      - .env
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: False
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres:5432/airflow_db
+      PYTHONPATH: /opt/airflow/src
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./src:/opt/airflow/src
+      - /var/run/docker.sock:/var/run/docker.sock # this is to establish connection with our sock to docker sock
+                                                  # this is done to allow Airflow to communicate with the Docker daemon and communicate with other containers
+    group_add: 
+      - '1001' # checked using stat -c '%g' /var/run/docker.sock
+    # this is done to provide permission to access and run the docker.sock, 
+    # it is for running docker commands to run DBT jobs/tasks in airflow container
+    command: >
+      bash -c "airflow db migrate && airflow standalone"
+    # this is to migrate the necessary Airflow metadata database schema && spins up a local webserver, scheduler, and runs initialization for development
+    depends_on:
+      - postgres
+    networks:
+      - epc-network
+
+  dbt:
+    container_name: dbt
+    image: ghcr.io/dbt-labs/dbt-snowflake:1.9.latest
+    volumes:
+      - ./dbt/dbt_epc:/usr/app
+      - ./dbt/profiles.yml:/home/dbt_user/.dbt/profiles.yml
+    working_dir: /usr/app
+    environment:
+      DBT_PROFILES_DIR: "/home/dbt_user/.dbt"
+    networks:
+      - epc-network
+    command: run # debug # init dbt_epc
+    # ["tail", "-f", "/dev/null"] or ["sleep", "infinity"] slim alpine base so no shell utils like tail or sleep
+
+networks:
+  epc-network:
+    driver: bridge
+
+volumes:
+  postgres:

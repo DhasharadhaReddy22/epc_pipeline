@@ -3,7 +3,7 @@ import logging
 import os
 from pathlib import Path
 
-def get_logger(logger_name=__name__, log_dir="logs", log_file="generic.log"):
+def get_logger(logger_name=__name__, log_dir="script_logs", log_file="generic.log"):
     """
         Sets up and returns a logger instance
         Args:

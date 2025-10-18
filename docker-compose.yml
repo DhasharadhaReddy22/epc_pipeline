@@ -31,6 +31,7 @@ services:
       PYTHONPATH: /opt/airflow/src
     volumes:
       - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs # airflow system logs
       - ./src:/opt/airflow/src
       - /var/run/docker.sock:/var/run/docker.sock # this is to establish connection with our sock to docker sock
                                                   # this is done to allow Airflow to communicate with the Docker daemon and communicate with other containers
@@ -48,7 +49,7 @@ services:
 
   dbt:
     container_name: dbt
-    image: ghcr.io/dbt-labs/dbt-snowflake:1.9.latest
+    image: dbt-snowflake:custom
     volumes:
       - ./dbt/dbt_epc:/usr/app
       - ./dbt/profiles.yml:/home/dbt_user/.dbt/profiles.yml
@@ -57,8 +58,7 @@ services:
       DBT_PROFILES_DIR: "/home/dbt_user/.dbt"
     networks:
       - epc-network
-    command: run # debug # init dbt_epc
-    # ["tail", "-f", "/dev/null"] or ["sleep", "infinity"] slim alpine base so no shell utils like tail or sleep
+    command: ["sleep", "infinity"]
 
 networks:
   epc-network:

@@ -1,9 +1,8 @@
 import os
-import logging
 from pathlib import Path
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
-import time
+from typing import Dict
 
 from src.utils.api_client import EPCAPIClient
 from src.utils.bucket_client import S3BucketClient
@@ -78,7 +77,7 @@ def fetch_files() -> None:
         logger.exception(f"Error fetching files for {month_tag}: {e}")
         raise
 
-def process_files() -> list[Path]:
+def process_files() -> Dict[Path, Path]:
     """
         Extracts, renames, and organizes downloaded zip files
     """

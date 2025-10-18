@@ -1,0 +1,36 @@
+# Dockerfile for dbt with Snowflake adapter
+# This is being done so that interactive shell can be used for debugging
+# and running dbt commands directly when container is started.
+# In the official dbt images, the entrypoint is set to 'dbt', which prevents
+# running other commands directly that can help in sustaining the container
+# instead we are building the image with a CMD that can be overridden in docker-compose.yml
+FROM python:3.11-slim-bookworm
+
+# Ensure Python outputs logs instantly and handles UTF-8 encoding properly
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONIOENCODING=UTF-8
+
+# Install system dependencies (build tools, git) and clean up afterwards
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install dbt-core and dbt-snowflake (matching your dbt project version)
+RUN pip install --no-cache-dir \
+    "dbt-core==1.9.*" \
+    "dbt-snowflake==1.9.*" \
+    "dbt-airflow"
+
+# Create a non-root dbt user (for better container security)
+RUN useradd --create-home --shell /bin/bash dbt_user
+
+# Set up working directory
+WORKDIR /usr/app/dbt
+RUN chown dbt_user:dbt_user /usr/app/dbt
+
+# Switch to non-root user
+USER dbt_user
+
+# Default command (can be overridden by docker-compose)
+CMD ["dbt", "--version"]

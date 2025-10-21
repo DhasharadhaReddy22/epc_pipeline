@@ -3,10 +3,20 @@ USE DATABASE EPC_DB;
 USE SCHEMA RAW;
 
 CREATE OR REPLACE TABLE COPY_AUDIT (
-    FILEPATH             STRING, -- full s3:// path
-    TARGET_TABLE         STRING,
-    LOAD_TS              TIMESTAMP_LTZ DEFAULT CURRENT_TIMESTAMP,
-    DAG_RUN_ID           STRING
+    FILEPATH               STRING,             -- full S3 path (s3://...)
+    TARGET_TABLE           STRING,             -- destination table name
+    STATUS                 STRING,             -- LOADED / PARTIALLY_LOADED / SKIPPED
+    ROWS_PARSED            NUMBER,             -- total rows parsed
+    ROWS_LOADED            NUMBER,             -- successfully loaded
+    ERROR_LIMIT            NUMBER,             -- maximum allowed errors
+    ERRORS_SEEN            NUMBER,             -- number of errors during load
+    FIRST_ERROR            STRING,             -- first error message, if any
+    FIRST_ERROR_LINE       NUMBER,             -- line number of first error
+    FIRST_ERROR_CHARACTER  NUMBER,             -- character position of first error
+    FIRST_ERROR_COLUMN_NAME STRING,            -- column with first error
+    STAGED_FILE_SIZE       NUMBER,             -- file size in bytes
+    LOAD_TS                TIMESTAMP_LTZ DEFAULT CURRENT_TIMESTAMP,
+    DAG_RUN_ID             STRING              -- Airflow DAG run identifier
 );
 
 CREATE OR REPLACE TABLE DISPLAY_CERTIFICATES (

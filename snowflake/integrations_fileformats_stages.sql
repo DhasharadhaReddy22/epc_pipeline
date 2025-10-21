@@ -13,6 +13,8 @@ DESCRIBE INTEGRATION epc_s3_int; -- copy the STORAGE_AWS_EXTERNAL_ID and STORAGE
 
 ALTER STORAGE INTEGRATION epc_s3_int SET STORAGE_AWS_ROLE_ARN = 'arn:aws:iam::<aws_account_id>:role/epc-project-role';
 
+GRANT USAGE ON INTEGRATION epc_s3_int TO ROLE TRANSFORM; -- grant usage to TRANSFORM role
+
 -- Set defaults
 USE WAREHOUSE COMPUTE_WH;
 USE DATABASE EPC_DB;
@@ -33,6 +35,8 @@ CREATE OR REPLACE FILE FORMAT epc_csv_format
     TIME_FORMAT = 'AUTO'
     TIMESTAMP_FORMAT = 'AUTO'
     COMPRESSION = 'AUTO';
+
+GRANT USAGE ON FILE FORMAT epc_csv_format TO ROLE TRANSFORM; -- grant usage to TRANSFORM role
 
 -- create stages
 CREATE OR REPLACE STAGE epc_raw_stage

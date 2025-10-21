@@ -15,7 +15,7 @@ from src.ingestion.epc_ingestion import fetch_files, process_files, s3_upload, c
 
 default_args = {
     "retries": 1,
-    'retry_delay': timedelta(minutes=5)
+    'retry_delay': timedelta(minutes=1)
 }
 
 @dag(
@@ -29,7 +29,9 @@ default_args = {
 )
 def dev_ingestion():
     
-    start = EmptyOperator(task_id='start')
+    @task(task_id="start")
+    def _start():
+        print("Starting DAG execution")
 
     @task(task_id="fetch_files")
     def _fetch_files():
@@ -51,25 +53,48 @@ def dev_ingestion():
         """Cleanup the temporary local files and directories."""
         return cleanup()
 
-    trigger_next_dag = TriggerDagRunOperator(
-        task_id="trigger_s3_to_snowflake",
-        trigger_dag_id="dev_s3_to_snowflake",
-        wait_for_completion=False,
-        reset_dag_run=True,  # avoids duplicate triggers if DAG is rerun
-        trigger_rule="all_success",
-        conf={"latest_files": "{{ ti.xcom_pull(task_ids='upload_to_s3') }}"}
-    )
+    # trigger_next_dag = TriggerDagRunOperator(
+    #     task_id="trigger_s3_to_snowflake",
+    #     trigger_dag_id="dev_s3_to_snowflake",
+    #     wait_for_completion=False,
+    #     reset_dag_run=True,  # avoids duplicate triggers if DAG is rerun
+    #     trigger_rule="all_success",
+    #     conf={"latest_files": "{{ ti.xcom_pull(task_ids='upload_to_s3') }}"}
+    # )
 
-    end = EmptyOperator(task_id='end')
+    @task(task_id="trigger_s3_to_snowflake", trigger_rule="all_success")
+    def _trigger_s3_to_snowflake(latest_files: list[str]):
+        """
+        Trigger the downstream DAG that handles the Snowflake COPY process.
+        No direct substitute of TriggerDagRunOperator in TaskFlow API, hence wrapped.
+        """
+        # Instantiate and execute TriggerDagRunOperator inside this task
+        trigger = TriggerDagRunOperator(
+            task_id="trigger_next_dag_internal",
+            trigger_dag_id="dev_s3_to_snowflake",
+            wait_for_completion=False,
+            reset_dag_run=True,
+            conf={"latest_files": latest_files},
+        )
+        # Context is needed to execute the operator
+        context = {}  # empty because this runs within task context
+        trigger.execute(context)
+
+    @task(task_id="end")
+    def _end():
+        print("DAG completed successfully")
 
     # Instantiate tasks
+    start = _start()
     fetch = _fetch_files()
     process = _process_files()
     upload = _upload_to_s3(process)
+    trigger_next_dag = _trigger_s3_to_snowflake(upload)
     clean = _cleanup_local()
+    end = _end()
 
     # Define task dependencies
-    start >> fetch >> process >> upload >> clean >> trigger_next_dag >> end
+    start >> fetch >> process >> upload >> trigger_next_dag >> clean >> end
 
 # Instantiate the DAG
 dev_ingestion_dag = dev_ingestion()

@@ -27,7 +27,7 @@ GRANT ROLE TRANSFORM TO USER epc_dbt;
 CREATE DATABASE IF NOT EXISTS EPC_DB;
 CREATE SCHEMA IF NOT EXISTS EPC_DB.RAW;
 
--- Step 6: Grant permissions to the `transform` role
+-- Step 6: Grant permissions to the `transform` role, don't forget to grant for integrations, file formats, etc.
 GRANT ALL ON WAREHOUSE COMPUTE_WH TO ROLE TRANSFORM;
 GRANT ALL ON DATABASE EPC_DB TO ROLE TRANSFORM;
 GRANT ALL ON ALL SCHEMAS IN DATABASE EPC_DB TO ROLE TRANSFORM;

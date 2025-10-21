@@ -42,6 +42,16 @@ def get_prev_month_string() -> str:
     prev_month_last_day = first_day_this_month - timedelta(days=1)
     return prev_month_last_day.strftime("%Y-%m")
 
+def list_latest_files() -> list[str]:
+    """
+        Lists the latest uploaded files in s3 bucket
+    """
+    list = epc_s3.list_objects(prefix="raw/")
+    latest_month_tag = get_prev_month_string()
+    latest_files = [f"s3://{epc_s3.bucket_name}/{file}" for file in list if latest_month_tag in file]
+    logger.info(f"Latest files for {latest_month_tag}: {latest_files}")
+    return latest_files
+
 def fetch_files() -> None:
     """
         Downloads zip files iff all file present, else aborts
@@ -108,13 +118,10 @@ def process_files() -> Dict[Path, Path]:
             
             if "display" in zip_file:
                 dataset_type = "display"
-                fname_prefix = "disp"
             elif "non-domestic" in zip_file:
                 dataset_type = "non_domestic"
-                fname_prefix = "non_dom"
             elif "domestic" in zip_file:
                 dataset_type = "domestic"
-                fname_prefix = "dom"
             else:
                 logger.warning(f"Unrecognized dataset type for: {zip_file}")
                 continue
@@ -127,7 +134,7 @@ def process_files() -> Dict[Path, Path]:
             # moving the files
             cert_src = unzipped_dir / "certificates.csv"
             if cert_src.exists():
-                cert_dest = cert_dest_dir / f"{fname_prefix}_cert_{month_tag}.csv"
+                cert_dest = cert_dest_dir / f"{dataset_type}_certificates_{month_tag}.csv"
                 move_file(cert_src, cert_dest)
                 logger.info(f"Moved and renamed certificates: {cert_src} → {cert_dest}")
                 files_processed[str(cert_src)] = str(cert_dest)
@@ -136,7 +143,7 @@ def process_files() -> Dict[Path, Path]:
 
             rec_src = unzipped_dir / "recommendations.csv"
             if rec_src.exists():
-                rec_dest = rec_dest_dir / f"{fname_prefix}_recom_{month_tag}.csv"
+                rec_dest = rec_dest_dir / f"{dataset_type}_recommendations_{month_tag}.csv"
                 move_file(rec_src, rec_dest)
                 logger.info(f"Moved and renamed recommendations: {rec_src} → {rec_dest}")
                 files_processed[str(rec_src)] = str(rec_dest)
@@ -149,10 +156,11 @@ def process_files() -> Dict[Path, Path]:
         logger.exception(f"Error processing files for {month_tag}: {e}")
         raise
 
-def s3_upload(processed_files: dict) -> None:
+def s3_upload(processed_files: dict) -> list:
     """
         Upload processed files to S3
     """
+    uploaded_files = []
     try:
         for _, filepath in processed_files.items():
             src = Path(filepath)
@@ -178,11 +186,15 @@ def s3_upload(processed_files: dict) -> None:
                 continue
 
             s3_path = f"raw/{file_type}/{dataset_type}/{src.name}"
-            epc_s3.upload_file(src, s3_path)
+            result = epc_s3.upload_file(src, s3_path)
+            if result:
+                uploaded_files.append(f"s3://epc-snowflake-project/{s3_path}")
 
     except Exception as e:
         logger.exception(f"Error uploading files to S3: {e}")
         raise
+
+    return uploaded_files
 
 def cleanup():
     """
@@ -197,8 +209,9 @@ def cleanup():
 
 if __name__=="__main__":
 
-    print(get_prev_month_string())
-    fetch_files()
-    processed_files = process_files()
-    s3_upload(processed_files)
-    cleanup()
+    # print(get_prev_month_string())
+    # fetch_files()
+    # processed_files = process_files()
+    # s3_upload(processed_files)
+    # cleanup()
+    list_latest_files()

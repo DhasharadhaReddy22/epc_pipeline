@@ -1,7 +1,5 @@
 import ast
 from airflow.decorators import dag, task
-from airflow.operators.empty import EmptyOperator
-from airflow.operators.python import BranchPythonOperator
 from airflow.exceptions import AirflowException
 from datetime import datetime, timedelta, timezone
 import sys

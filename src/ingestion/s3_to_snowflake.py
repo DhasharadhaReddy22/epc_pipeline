@@ -1,15 +1,88 @@
 from airflow.providers.snowflake.hooks.snowflake import SnowflakeHook
 from airflow.exceptions import AirflowException
+from airflow.models import Connection
+from airflow.utils.session import provide_session
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-load_dotenv()
+import sys
+sys.path.append('/opt/airflow')
 
 from src.utils.logger import get_logger
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+load_dotenv(BASE_DIR / ".env")
 
 logger = get_logger("src.utils.snowflake", log_dir=BASE_DIR / "logs", log_file="snowflake.log")
+
+@provide_session
+def create_snowflake_connection(conn_id: str="snowflake_epc_default", session=None):
+    """
+    Create or update a Snowflake Airflow connection using environment variables.
+    Uses the Airflow Connection class directly (no subprocess, no CLI).
+
+    Parameters
+    ----------
+    conn_id : str
+        The connection ID to register in Airflow.
+    session : Session
+        Auto-injected by Airflow through @provide_session.
+    """
+
+    # Read from environment variables
+    user = os.getenv("SNOWFLAKE_USER")
+    password = os.getenv("SNOWFLAKE_PASSWORD")
+    account = os.getenv("SNOWFLAKE_ACCOUNT")
+    database = os.getenv("SNOWFLAKE_DB")
+    schema = os.getenv("SNOWFLAKE_SCHEMA")
+    warehouse = os.getenv("SNOWFLAKE_WAREHOUSE")
+    role = os.getenv("SNOWFLAKE_ROLE")
+    region = os.getenv("SNOWFLAKE_REGION")
+
+    # Validate
+    missing = [k for k, v in {
+        "SNOWFLAKE_USER": user,
+        "SNOWFLAKE_PASSWORD": password,
+        "SNOWFLAKE_ACCOUNT": account,
+        "SNOWFLAKE_DB": database,
+        "SNOWFLAKE_SCHEMA": schema,
+        "SNOWFLAKE_WAREHOUSE": warehouse,
+        "SNOWFLAKE_ROLE": role,
+        "SNOWFLAKE_REGION": region
+    }.items() if not v]
+
+    if missing:
+        raise ValueError(f"Missing required env vars: {', '.join(missing)}")
+    
+    conn_id = conn_id.replace(" ", "_")
+
+    # Construct Connection URI using Airflow's Connection class
+    conn = Connection(
+        conn_id=conn_id,
+        conn_type="snowflake",
+        login=user,
+        password=password,
+        host=account,
+        schema=schema,
+        extra={
+            "account": account,
+            "warehouse": warehouse,
+            "database": database,
+            "role": role,
+            "region": region
+        }
+    )
+
+    # If connection exists, update; else add
+    existing_conn = session.query(Connection).filter(Connection.conn_id == conn_id).one_or_none()
+    if existing_conn:
+        logger.info(f"Found an existing connection: {existing_conn}, deleting it.")
+        session.delete(existing_conn)
+        session.commit()
+
+    session.add(conn)
+    session.commit()
+    logger.info(f"Snowflake connection '{conn.conn_id}' created or updated successfully.")
 
 def check_audit_table(s3_paths: list[str]) -> list[str]:
     """
@@ -178,3 +251,6 @@ def copy_and_update(unprocessed_files: list[str], dag_run_id: str):
             cur.close()
         if conn:
             conn.close()
+
+if __name__=="__main__":
+    create_snowflake_connection()

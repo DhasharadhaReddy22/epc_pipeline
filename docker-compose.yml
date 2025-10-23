@@ -27,6 +27,7 @@ services:
     environment:
       AIRFLOW__CORE__LOAD_EXAMPLES: False
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW_FERNET_KEY}
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${AIRFLOW_USER}:${AIRFLOW_PASSWORD}@postgres:5432/${AIRFLOW_DB}
       PYTHONPATH: /opt/airflow/src
     volumes:

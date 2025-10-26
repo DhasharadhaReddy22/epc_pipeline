@@ -1,6 +1,5 @@
 from airflow import DAG
 from airflow.decorators import dag, task
-from airflow.operators.empty import EmptyOperator
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from datetime import datetime, timedelta
 import sys
@@ -52,15 +51,6 @@ def dev_ingestion():
     def _cleanup_local():
         """Cleanup the temporary local files and directories."""
         return cleanup()
-
-    # trigger_next_dag = TriggerDagRunOperator(
-    #     task_id="trigger_s3_to_snowflake",
-    #     trigger_dag_id="dev_s3_to_snowflake",
-    #     wait_for_completion=False,
-    #     reset_dag_run=True,  # avoids duplicate triggers if DAG is rerun
-    #     trigger_rule="all_success",
-    #     conf={"latest_files": "{{ ti.xcom_pull(task_ids='upload_to_s3') }}"}
-    # )
 
     @task(task_id="trigger_s3_to_snowflake", trigger_rule="all_success")
     def _trigger_s3_to_snowflake(latest_files: list[str]):

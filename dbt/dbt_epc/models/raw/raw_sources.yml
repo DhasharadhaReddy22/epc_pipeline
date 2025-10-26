@@ -1,0 +1,96 @@
+sources:
+  - name: raw
+    database: EPC_DB
+    schema: RAW
+    tables:
+      - name: raw_copy_audit
+        description: "Audit metadata for COPY operations"
+        columns:
+          - name: audit_id
+            tests:
+              - not_null
+              - unique
+
+      - name: raw_display_certificates
+        description: "Raw Display Certificates loaded via Airflow"
+        columns:
+          - name: lmk_key
+            tests:
+              - not_null
+              - unique
+          - name: audit_id
+            tests:
+              - not_null
+              - relationships:
+                  to: source('raw', 'raw_copy_audit')
+                  field: audit_id
+
+      - name: raw_display_recommendations
+        description: "Raw Display Recommendations linked to certificates"
+        columns:
+          - name: lmk_key
+            tests:
+              - relationships:
+                  to: source('raw', 'raw_display_certificates')
+                  field: lmk_key
+          - name: audit_id
+            tests:
+              - relationships:
+                  to: source('raw', 'raw_copy_audit')
+                  field: audit_id
+
+      - name: raw_domestic_certificates
+        description: "Raw Domestic Certificates loaded via Airflow"
+        columns:
+          - name: lmk_key
+            tests:
+              - not_null
+              - unique
+          - name: audit_id
+            tests:
+              - not_null
+              - relationships:
+                  to: source('raw', 'raw_copy_audit')
+                  field: audit_id
+      
+      - name: raw_domestic_recommendations
+        description: "Raw Domestic Recommendations linked to certificates"
+        columns:
+          - name: lmk_key
+            tests:
+              - relationships:
+                  to: source('raw', 'raw_domestic_certificates')
+                  field: lmk_key
+          - name: audit_id
+            tests:
+              - relationships:
+                  to: source('raw', 'raw_copy_audit')
+                  field: audit_id
+
+      - name: raw_non_domestic_certificates
+        description: "Raw Non-Domestic Certificates loaded via Airflow"
+        columns:
+          - name: lmk_key
+            tests:
+              - not_null
+              - unique
+          - name: audit_id
+            tests:
+              - not_null
+              - relationships:
+                  to: source('raw', 'raw_copy_audit')
+                  field: audit_id
+
+      - name: raw_non_domestic_recommendations
+        description: "Raw Non-Domestic Recommendations linked to certificates"
+        columns:
+          - name: lmk_key
+            tests:
+              - relationships:
+                  to: source('raw', 'raw_non_domestic_certificates')
+                  field: lmk_key
+          - name: audit_id
+            tests:
+              - relationships:
+                  to: source('raw', 'raw_copy_audit')
+                  field: audit_id

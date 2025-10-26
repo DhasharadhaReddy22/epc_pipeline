@@ -1,7 +1,7 @@
 dbt_epc:
   outputs:
     dev:
-      account: 
+      account: # Account > Connect a tool to Snowflake > Account Identifier (specifically the one with - (hyphen))
       database: EPC_DB
       password: epc_dbt#123
       role: TRANSFORM

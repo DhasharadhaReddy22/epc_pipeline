@@ -11,7 +11,7 @@ CREATE OR REPLACE STORAGE INTEGRATION epc_s3_int
 
 DESCRIBE INTEGRATION epc_s3_int; -- copy the STORAGE_AWS_EXTERNAL_ID and STORAGE_AWS_IAM_USER_ARN for creation of STORAGE_AWS_ROLE_ARN in AWS
 
-ALTER STORAGE INTEGRATION epc_s3_int SET STORAGE_AWS_ROLE_ARN = 'arn:aws:iam::<aws_account_id>:role/epc-project-role';
+ALTER STORAGE INTEGRATION epc_s3_int SET STORAGE_AWS_ROLE_ARN = 'arn:aws:iam::<aws_account_id>:role/epc-project-role'; -- paste the arn of the role created for this snowflake account's STORAGE_AWS_IAM_USER_ARN to take access to S3 bucket
 
 GRANT USAGE ON INTEGRATION epc_s3_int TO ROLE TRANSFORM; -- grant usage to TRANSFORM role
 
@@ -43,3 +43,16 @@ CREATE OR REPLACE STAGE epc_raw_stage
   URL = 's3://epc-snowflake-project/raw/'
   STORAGE_INTEGRATION = epc_s3_int
   FILE_FORMAT = (FORMAT_NAME = epc_csv_format);
+
+GRANT USAGE ON STAGE epc_raw_stage TO ROLE TRANSFORM;
+
+-- create sequence for audit table
+
+CREATE OR REPLACE SEQUENCE RAW_COPY_AUDIT_SEQ
+    START = 1000
+    INCREMENT = 1;
+
+GRANT USAGE ON SEQUENCE RAW_COPY_AUDIT_SEQ TO ROLE TRANSFORM;
+
+-- verify grants granted to the role before staring the ELT process
+SHOW GRANTS TO ROLE TRANSFORM;

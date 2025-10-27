@@ -2,6 +2,7 @@ sources:
   - name: raw
     database: EPC_DB
     schema: RAW
+    tags: ["raw"]
     tables:
       - name: raw_copy_audit
         description: "Audit metadata for COPY operations"
@@ -10,6 +11,15 @@ sources:
             tests:
               - not_null
               - unique
+          - name: filepath
+            tests:
+              - not_null
+              - unique
+          - name: status
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['LOADED']
 
       - name: raw_display_certificates
         description: "Raw Display Certificates loaded via Airflow"
@@ -30,11 +40,13 @@ sources:
         columns:
           - name: lmk_key
             tests:
+              - not_null
               - relationships:
                   to: source('raw', 'raw_display_certificates')
                   field: lmk_key
           - name: audit_id
             tests:
+              - not_null
               - relationships:
                   to: source('raw', 'raw_copy_audit')
                   field: audit_id
@@ -58,11 +70,13 @@ sources:
         columns:
           - name: lmk_key
             tests:
+              - not_null
               - relationships:
                   to: source('raw', 'raw_domestic_certificates')
                   field: lmk_key
           - name: audit_id
             tests:
+              - not_null
               - relationships:
                   to: source('raw', 'raw_copy_audit')
                   field: audit_id
@@ -86,11 +100,13 @@ sources:
         columns:
           - name: lmk_key
             tests:
+              - not_null
               - relationships:
                   to: source('raw', 'raw_non_domestic_certificates')
                   field: lmk_key
           - name: audit_id
             tests:
+              - not_null
               - relationships:
                   to: source('raw', 'raw_copy_audit')
                   field: audit_id

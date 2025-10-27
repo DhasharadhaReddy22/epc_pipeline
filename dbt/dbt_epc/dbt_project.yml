@@ -35,9 +35,12 @@ models:
     raw:
       +materialized: view
       +schema: raw
+      +tags: ["raw"]
     staging:
       +materialized: table
       +schema: staging
+      +tags: ["staging"]
     marts:
       +materialized: table
       +schema: marts
+      +tags: ["marts"]

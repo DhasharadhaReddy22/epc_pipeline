@@ -37,10 +37,10 @@ models:
       +schema: raw
       +tags: ["raw"]
     staging:
-      +materialized: table
+      +materialized: incremental
       +schema: staging
       +tags: ["staging"]
     marts:
-      +materialized: table
+      +materialized: incremental
       +schema: marts
       +tags: ["marts"]

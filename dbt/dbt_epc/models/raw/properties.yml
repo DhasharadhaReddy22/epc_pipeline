@@ -20,6 +20,9 @@ sources:
               - not_null
               - accepted_values:
                   values: ['LOADED']
+          - name: audit_ts
+            tests:
+              - not_null
 
       - name: raw_display_certificates
         description: "Raw Display Certificates loaded via Airflow"

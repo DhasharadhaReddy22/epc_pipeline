@@ -1,0 +1,108 @@
+models:
+  - name: stg_display_certificates
+    description: "Staging table for Display Certificates joined with audit metadata and incrementally loaded"
+    columns:
+      - name: lmk_key
+        description: "Unique property key for the certificate"
+        tests:
+          - not_null
+          - unique
+      - name: audit_id
+        description: "Audit ID linking to the raw_copy_audit table"
+        tests:
+          - not_null
+          - relationships:
+              to: source('raw', 'raw_copy_audit')
+              field: audit_id
+
+  - name: stg_display_recommendations
+    description: "Staging table for Display Recommendations linked to certificates and incrementally loaded"
+    columns:
+      - name: lmk_key
+        description: "Foreign key linking to stg_display_certificates"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_display_certificates')
+              field: lmk_key
+      - name: payback_type
+        description: "TODO"
+        tests:
+          - not_null
+      - name: audit_id
+        description: "Audit ID linking to the raw_copy_audit table"
+        tests:
+          - not_null
+          - relationships:
+              to: source('raw', 'raw_copy_audit')
+              field: audit_id
+
+  - name: stg_domestic_certificates
+    description: "Staging model for Domestic Certificates and incrementally loaded"
+    columns:
+      - name: lmk_key
+        description: "Unique property key for the certificate"
+        tests:
+          - not_null
+          - unique
+      - name: audit_id
+        description: "Audit ID linking to the raw_copy_audit table"
+        tests:
+          - not_null
+          - relationships:
+              to: source('raw', 'raw_copy_audit')
+              field: audit_id
+
+  - name: stg_domestic_recommendations
+    description: "Staging model for Domestic Recommendations linked to Certificates"
+    columns:
+      - name: lmk_key
+        description: "Foreign key linking to stg_display_certificates"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_domestic_certificates')
+              field: lmk_key
+      - name: audit_id
+        description: "Audit ID linking to the raw_copy_audit table"
+        tests:
+          - not_null
+          - relationships:
+              to: source('raw', 'raw_copy_audit')
+              field: audit_id
+
+  - name: stg_non_domestic_certificates
+    description: "Staging model for Non-Domestic Certificates"
+    columns:
+      - name: lmk_key
+        description: "Unique property key for the certificate"
+        tests:
+          - not_null
+          - unique
+      - name: audit_id
+        description: "Audit ID linking to the raw_copy_audit table"
+        tests:
+          - not_null
+          - relationships:
+              to: source('raw', 'raw_copy_audit')
+              field: audit_id
+
+  - name: stg_non_domestic_recommendations
+    description: "Staging model for Non-Domestic Recommendations linked to Certificates"
+    columns:
+      - name: lmk_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_non_domestic_certificates')
+              field: lmk_key
+      - name: payback_type
+        description: "TODO"
+        tests:
+          - not_null
+      - name: audit_id
+        tests:
+          - not_null
+          - relationships:
+              to: source('raw', 'raw_copy_audit')
+              field: audit_id

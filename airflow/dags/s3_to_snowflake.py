@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, timezone
 import sys
 sys.path.append('/opt/airflow')
 
-from src.ingestion.epc_ingestion import list_latest_files
+from src.ingestion.epc_ingestion import get_prev_month_string, list_latest_files
 from src.ingestion.s3_to_snowflake import check_audit_table, copy_and_update
 
 default_args = {
@@ -34,44 +34,66 @@ def dev_s3_to_snowflake():
     def _get_latest_files(dag_run=None):
         """Get the latest or specific files uploaded for this month from S3."""
         conf_files = None
+        month_tag = None
 
         # Check dag_run.conf first
         if dag_run and dag_run.conf:
             conf_files = dag_run.conf.get("latest_files")
-            print("Found DAG conf:", conf_files)
+            if (conf_files is None) or (len(conf_files) == 0):
+                print("DAG conf latest_files is empty list.")
+            # Parse if string, this is often the case with Airflow Variables and dag_run.conf
+            elif isinstance(conf_files, str):
+                print("Found DAG conf:", conf_files)
+                try:
+                    conf_files = ast.literal_eval(conf_files)
+                    print("Using latest_files from DAG conf:", conf_files)
+                    return conf_files
+                
+                except Exception as e:
+                    print("Failed to parse conf_files, using empty list:", e)
+                    conf_files = []
 
-        # If not found, check Airflow Variable for ad-hoc run
+        # If not found or empty, check Airflow Variables, this is mostly for ad-hoc run
         if not conf_files:
             manual_list = Variable.get("manual_file_list", default=None)
             if manual_list:
                 try:
                     conf_files = ast.literal_eval(manual_list)
+                    if type(conf_files) is not list:
+                        raise ValueError("manual_file_list Variable is not a list")
+                    
+                    conf_files = [f.strip() for f in conf_files] # clean up whitespace just in case
                     print("Using manual list from Airflow Variable:", conf_files)
-                    Variable.delete("manual_file_list")  # clean up after use
+                    return conf_files
+                
+                except ValueError as ve:
+                    print("manual_file_list Variable is not a valid list:", ve)
+                    raise AirflowException("Invalid manual_file_list Variable format.")
+                
                 except Exception as e:
                     print("Failed to parse Airflow Variable manual_file_list:", e)
-                    conf_files = []
+                    raise AirflowException("Invalid manual_file_list Variable format.")
 
-        # If still not found, fetch latest from S3
-        if not conf_files:
-            print("No conf or variable found, fetching latest files from S3.")
-            return list_latest_files()
+            if not manual_list:
+                print("No manual_file_list Variable set, checking for any month_tag Variable.")
+                var_value = Variable.get("epc_month_tag (YYYY-MM)", default=None)
+                if var_value:
+                    try:
+                        parsed = datetime.strptime(var_value, "%Y-%m")
+                        month_tag = parsed.strftime("%Y-%m")
+                        print(f"Using month tag from Airflow Variable: {month_tag} to fetch file list.")
+                        return list_latest_files(month_tag=month_tag)
+                    except ValueError:
+                        raise ValueError(f"Invalid month tag format in Airflow Variable: {var_value}. Expected 'YYYY-MM'.")
 
-        # Parse if string, this is often the case with Airflow Variables and dag_run.conf
-        if isinstance(conf_files, str):
-            try:
-                conf_files = ast.literal_eval(conf_files)
-            except Exception as e:
-                print("Failed to parse conf_files, using empty list:", e)
-                conf_files = []
-
-        return conf_files
+        print("No conf or variable found, fetching latest files from S3.")
+        return list_latest_files()
 
     @task(task_id="check_copy_audit")
     def _check_copy_audit(latest_files: list[str]):
         """Check which of the latest files have not been copied to Snowflake yet."""
         print(f"Latest files to check: {latest_files}")
-        if len(latest_files) == 0:
+        if (latest_files is None) or (len(latest_files) == 0):
             print("No latest files to check.")
             return []
 
@@ -112,14 +134,16 @@ def dev_s3_to_snowflake():
     def _trigger_dbt_transformations(results_list: dict):
         """Merge results from all dynamic copy tasks and decide next action."""
 
-        if not results_list:
-            print("No results found; possibly all skipped.")
-        
         print("Collected XCom results:", results_list)
 
+        
         combined = {k: v for d in results_list if d for k, v in d.items()}
         print("Merged copy results:", combined)
 
+        if combined is None or len(combined) == 0:
+            print("No results found; possibly all skipped.")
+            raise AirflowException("No COPY operations were performed.")
+        
         not_successes = [k for k, v in combined.items() if v not in ["SUCCESS", "LOADED"]]
         if not_successes:
             print(f"Some files failed or partially loaded: {not_successes}")
@@ -135,6 +159,16 @@ def dev_s3_to_snowflake():
         # Context is needed to execute the operator
         context = {}  # empty because this runs within task context
         trigger.execute(context)
+
+    @task(task_id="airflow_var_cleanup")
+    def _airflow_var_cleanup():
+        """Cleanup Airflow Variables used for ad-hoc runs."""
+        try:
+            Variable.delete("manual_file_list")
+            Variable.delete("epc_month_tag (YYYY-MM)")
+            print("Cleaned up Airflow Variables.")
+        except Exception as e:
+            print(f"Error cleaning up Airflow Variables: {e}")
 
     @task(task_id="end", trigger_rule="none_failed_min_one_success")
     def _end():
@@ -152,13 +186,14 @@ def dev_s3_to_snowflake():
     # not _copy_file().expand(...) since we do not want to call _copy_file yet and have the implicit MappedOperator generate the N tasks
     
     trigger_dbt_transformations = _trigger_dbt_transformations(copy_file)
+    airflow_var_cleanup = _airflow_var_cleanup()
     end = _end()
 
     # DAG sequence, decorator tasks are already linked via above instantiations
     start >> latest_files >> check_copy_audit >> branch_task
     # branching logic is shown here
     branch_task >> skip_copy >> end
-    branch_task >> trigger_copy_files >> copy_file >> trigger_dbt_transformations >> end
+    branch_task >> trigger_copy_files >> copy_file >> trigger_dbt_transformations >> airflow_var_cleanup >> end
 
 # Instantiate the DAG
 dev_s3_to_snowflake_dag = dev_s3_to_snowflake()

@@ -42,21 +42,22 @@ def get_prev_month_string() -> str:
     prev_month_last_day = first_day_this_month - timedelta(days=1)
     return prev_month_last_day.strftime("%Y-%m")
 
-def list_latest_files() -> list[str]:
+def list_latest_files(month_tag:str = None) -> list[str]:
     """
         Lists the latest uploaded files in s3 bucket
     """
     list = epc_s3.list_objects(prefix="raw/")
-    latest_month_tag = get_prev_month_string()
+    latest_month_tag = month_tag if month_tag else get_prev_month_string()
     latest_files = [f"s3://{epc_s3.bucket_name}/{file}" for file in list if latest_month_tag in file]
     logger.info(f"Latest files for {latest_month_tag}: {latest_files}")
     return latest_files
 
-def fetch_files() -> None:
+def fetch_files(month_tag:str = None) -> None:
     """
         Downloads zip files iff all file present, else aborts
     """
-    month_tag = get_prev_month_string()
+    month_tag = month_tag if month_tag else get_prev_month_string()
+
     expected_files = [
         f"display-{month_tag}.zip",
         f"domestic-{month_tag}.zip",
@@ -70,6 +71,8 @@ def fetch_files() -> None:
 
     try:
         present_files_dict = {file: available_files[file] for file in expected_files if file in available_files}
+        if not present_files_dict:
+            raise FileNotFoundError(f"No expected files found for {month_tag} in EPC API.")
         logger.info(f"Available files this month: {present_files_dict}")
 
         present_files = list(present_files_dict.keys())
@@ -87,11 +90,11 @@ def fetch_files() -> None:
         logger.exception(f"Error fetching files for {month_tag}: {e}")
         raise
 
-def process_files() -> Dict[Path, Path]:
+def process_files(month_tag:str = None) -> Dict[Path, Path]:
     """
         Extracts, renames, and organizes downloaded zip files
     """
-    month_tag = get_prev_month_string()
+    month_tag = month_tag if month_tag else get_prev_month_string()
     files_to_process = [
         f"display-{month_tag}.zip",
         f"domestic-{month_tag}.zip",
@@ -161,6 +164,7 @@ def s3_upload(processed_files: dict) -> list:
         Upload processed files to S3
     """
     uploaded_files = []
+    s3_paths = []
     try:
         for _, filepath in processed_files.items():
             src = Path(filepath)
@@ -186,6 +190,7 @@ def s3_upload(processed_files: dict) -> list:
                 continue
 
             s3_path = f"raw/{file_type}/{dataset_type}/{src.name}"
+            s3_paths.append(f"s3://epc-snowflake-project/{s3_path}")
             result = epc_s3.upload_file(src, s3_path)
             if result:
                 uploaded_files.append(f"s3://epc-snowflake-project/{s3_path}")
@@ -193,7 +198,10 @@ def s3_upload(processed_files: dict) -> list:
     except Exception as e:
         logger.exception(f"Error uploading files to S3: {e}")
         raise
-
+    
+    if not uploaded_files:
+        logger.error("No files were uploaded to S3.")
+        uploaded_files = s3_paths  # to avoid returning empty list silently
     return uploaded_files
 
 def cleanup():

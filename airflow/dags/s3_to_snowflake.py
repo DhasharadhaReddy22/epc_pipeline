@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, timezone
 import sys
 sys.path.append('/opt/airflow')
 
-from src.ingestion.epc_ingestion import get_prev_month_string, list_latest_files
+from src.ingestion.epc_ingestion import list_latest_files
 from src.ingestion.s3_to_snowflake import check_audit_table, copy_and_update
 
 default_args = {

@@ -14,6 +14,11 @@ models:
           - relationships:
               to: source('raw', 'raw_copy_audit')
               field: audit_id
+      - name: operational_rating_band
+        description: "Energy rating category for display certificates"
+        tests:
+          - dbt_expectations.expect_column_distinct_values_to_be_in_set:
+              value_set: ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
   - name: stg_display_recommendations
     description: "Staging table for Display Recommendations linked to certificates and incrementally loaded"
@@ -26,9 +31,16 @@ models:
               to: ref('stg_display_certificates')
               field: lmk_key
       - name: payback_type
-        description: "TODO"
+        description: "Payback type categories for recommended actions"
         tests:
           - not_null
+          - dbt_expectations.expect_column_distinct_values_to_be_in_set:
+              value_set: ['short', 'medium', 'long', 'other']
+      - name: co2_impact
+        description: "CO2 impact categories for recommended actions"
+        tests:
+          - dbt_expectations.expect_column_distinct_values_to_be_in_set:
+              value_set: ['HIGH', 'MEDIUM', 'LOW']
       - name: audit_id
         description: "Audit ID linking to the raw_copy_audit table"
         tests:
@@ -45,6 +57,22 @@ models:
         tests:
           - not_null
           - unique
+      - name: current_energy_rating
+        description: "Energy rating band for domestic properties"
+        tests:
+          - dbt_expectations.expect_column_distinct_values_to_be_in_set:
+              value_set: ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+      - name: potential_energy_rating
+        description: "Energy rating band for domestic properties"
+        tests:
+          - dbt_expectations.expect_column_distinct_values_to_be_in_set:
+              value_set: ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+      - name: total_floor_area
+        description: "Floor area of the building (m²)"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 2000
       - name: audit_id
         description: "Audit ID linking to the raw_copy_audit table"
         tests:
@@ -79,6 +107,17 @@ models:
         tests:
           - not_null
           - unique
+      - name: floor_area
+        description: "Floor area of the building (m²)"
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 200000
+      - name: asset_rating_band
+        description: "Energy Performance Asset Rating converted into an energy band/grade into a linear 'A+ to G' scale (non-domestic)"
+        tests:
+          - dbt_expectations.expect_column_distinct_values_to_be_in_set:
+              value_set: ['A+', 'A', 'B', 'C', 'D', 'E', 'F', 'G']
       - name: audit_id
         description: "Audit ID linking to the raw_copy_audit table"
         tests:

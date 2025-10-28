@@ -46,7 +46,7 @@ CREATE OR REPLACE STAGE epc_raw_stage
 
 GRANT USAGE ON STAGE epc_raw_stage TO ROLE TRANSFORM;
 
--- create sequence for audit table
+-- create sequence for audit table, it is a NOORDER sequence starting from 1000
 
 CREATE OR REPLACE SEQUENCE RAW_COPY_AUDIT_SEQ
     START = 1000

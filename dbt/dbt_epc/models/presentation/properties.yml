@@ -1,0 +1,124 @@
+models:
+
+  - name: dim_display_property
+    description: "Slowly Changing Dimension (Type 2) for Display Certificates. Tracks historical changes in building attributes over time."
+    columns:
+      - name: lmk_key
+        description: "Unique property identifier for each certificate."
+        tests:
+          - not_null
+          - unique
+      - name: record_property_hash
+        description: "MD5 hash of core property attributes used to detect changes in property details."
+        tests:
+          - not_null
+      - name: valid_from
+        description: "Start month of validity for this property record."
+        tests:
+          - not_null
+      - name: current_flag
+        description: "Indicates whether the record is the latest version (true=current)."
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+      - name: load_month
+        description: "The ingestion batch month of this record, formatted as YYYY-MM."
+        tests:
+          - not_null
+
+  - name: fact_display_energy
+    description: "Fact table containing energy efficiency, CO₂ emissions, and benchmark metrics for display certificates."
+    columns:
+      - name: lmk_key
+        description: "Foreign key to dim_display_property."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_display_property')
+              field: lmk_key
+      - name: load_month
+        description: "Batch load month (YYYY-MM)."
+        tests:
+          - not_null
+      - name: operational_rating_band
+        description: "Energy efficiency band (A-G)."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['A','B','C','D','E','F','G']
+
+  - name: fact_display_recommendations
+    description: "Fact table containing recommendation-level data linked to display certificates for improving energy efficiency."
+    columns:
+      - name: lmk_key
+        description: "Foreign key linking to dim_display_property."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_display_property')
+              field: lmk_key
+      - name: payback_type
+        description: "Estimated payback period for implementing this recommendation."
+        tests:
+          - not_null
+      - name: co2_impact
+        description: "Impact of this recommendation on CO₂ reduction (Low, Medium, High)."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['LOW', 'MEDIUM', 'HIGH']
+
+  - name: kpi_display_recommendations
+    description: "Aggregated KPIs summarizing average recommendations per property, grouped by month and payback type."
+    columns:
+      - name: load_month
+        description: "Month of data aggregation."
+        tests:
+          - not_null
+      - name: payback_type
+        description: "Payback period classification."
+      - name: total_properties
+        description: "Number of distinct properties considered."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              strictly: false
+      - name: avg_rec_per_property
+        description: "Average number of recommendations per property for each payback type."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 50
+              strictly: false
+
+  - name: kpi_display_ratings
+    description: "Monthly KPIs summarizing average energy ratings, CO₂ intensity, and efficiency band distribution for display certificates."
+    columns:
+      - name: load_month
+        description: "Month of data aggregation."
+        tests:
+          - not_null
+      - name: cur_avg_operational_rating
+        description: "Average current operational rating for that month."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 200
+      - name: pct_high_band
+        description: "Percentage of properties in high energy efficiency bands (A-C)."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 100
+      - name: cur_avg_co2_per_m2
+        description: "Average CO₂ intensity (tonnes per m²)."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 10
+      - name: avg_recommendations_per_property
+        description: "Average number of improvement recommendations per property."
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 20

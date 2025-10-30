@@ -40,7 +40,7 @@ models:
       +materialized: incremental
       +schema: staging
       +tags: ["staging"]
-    marts:
+    presentation:
       +materialized: incremental
-      +schema: marts
-      +tags: ["marts"]
+      +schema: presentation
+      +tags: ["presentation"]

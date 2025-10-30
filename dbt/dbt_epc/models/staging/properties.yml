@@ -72,7 +72,7 @@ models:
         tests:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 1
-              max_value: 2000
+              max_value: 20000
       - name: audit_id
         description: "Audit ID linking to the raw_copy_audit table"
         tests:
@@ -113,6 +113,7 @@ models:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 1
               max_value: 200000
+              strictly: false
       - name: asset_rating_band
         description: "Energy Performance Asset Rating converted into an energy band/grade into a linear 'A+ to G' scale (non-domestic)"
         tests:

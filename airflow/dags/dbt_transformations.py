@@ -45,10 +45,23 @@ def _run_dbt_in_docker(task_id, command, context):
         ],
         environment={"DBT_PROFILES_DIR": "/home/dbt_user/.dbt"},
     )
-    result =  docker_operator.execute(context=context)
-    # Cleaning the output to only the stats
-    cleaned_output = str.split(result, "Done.")[-1].strip()
-    print(f"DBT Execution Summary: {cleaned_output}")
+    try:
+        result = docker_operator.execute(context=context)
+        # Cleaning the output to only the stats
+        cleaned_output = str.split(result, "Done.")[-1].strip()
+        print(f"DBT Execution Summary: {cleaned_output}")
+
+        if "ERROR=0" not in cleaned_output:
+            try:
+                error_count = int(re.search(r"ERROR=(\d+)", cleaned_output).group(1))
+                if error_count > 0:
+                    raise AirflowFailException(f"DBT task failed with {error_count} errors: {cleaned_output}")
+            except Exception:
+                # If regex parsing fails, still raise
+                raise AirflowFailException(f"DBT task failed: {cleaned_output}")
+
+    except Exception as e:
+        raise AirflowFailException(f"DBT task Docker task failed: {e}")
 
 default_args = {
     "retries": 1,
@@ -90,39 +103,58 @@ def dev_dbt_transformations():
 
         @task(task_id="stg_run")
         def _stg_run(**context):
-            try:
-                return _run_dbt_in_docker(
-                    task_id="dbt_epc_stg_run",
-                    command=(
-                        "bash -c 'dbt run --select tag:staging | tee /tmp/dbt_output.log; "
-                        "status=$?; tail -n 1 /tmp/dbt_output.log; exit $status'"
-                    ),
-                    context=context,
-                )
-            except Exception as e:
-                raise AirflowFailException(f"DBT staging run failed: {e}")
+            return _run_dbt_in_docker(
+                task_id="dbt_epc_stg_run",
+                command=(
+                    "bash -c 'dbt run --select tag:staging | tee /tmp/dbt_output.log; "
+                    "status=$?; tail -n 1 /tmp/dbt_output.log; exit $status'"
+                ),
+                context=context,
+            )
 
         @task(task_id="stg_tests")
         def _stg_tests(**context):
-            try:
-                return _run_dbt_in_docker(
-                    task_id="dbt_epc_stg_tests",
-                    command=(
-                        "bash -c 'dbt test --select tag:staging | tee /tmp/dbt_output.log; "
-                        "status=$?; tail -n 1 /tmp/dbt_output.log; exit $status'"
-                    ),
-                    context=context,
-                )
-            except Exception as e:
-                raise AirflowFailException(f"DBT staging tests failed: {e}")
+            return _run_dbt_in_docker(
+                task_id="dbt_epc_stg_tests",
+                command=(
+                    "bash -c 'dbt test --select tag:staging | tee /tmp/dbt_output.log; "
+                    "status=$?; tail -n 1 /tmp/dbt_output.log; exit $status'"
+                ),
+                context=context,
+            )
 
         stg_run = _stg_run()
         stg_tests = _stg_tests()
         stg_run >> stg_tests
     
-    @task(task_id="print_status")
-    def _print_status(summary: str):
-        print(f"Previous test result summary: {summary}")
+    @task_group(group_id="presentation_tasks")
+    def _presentation_tasks():
+
+        @task(task_id="presentation_run")
+        def _presentation_run(**context):
+            return _run_dbt_in_docker(
+                task_id="dbt_epc_presentation_run",
+                command=(
+                    "bash -c 'dbt run --select tag:presentation | tee /tmp/dbt_output.log; "
+                    "status=$?; tail -n 1 /tmp/dbt_output.log; exit $status'"
+                ),
+                context=context,
+            )
+
+        @task(task_id="presentation_tests")
+        def _presentation_tests(**context):
+            return _run_dbt_in_docker(
+                task_id="dbt_epc_presentation_tests",
+                command=(
+                    "bash -c 'dbt test --select tag:presentation | tee /tmp/dbt_output.log; "
+                    "status=$?; tail -n 1 /tmp/dbt_output.log; exit $status'"
+                ),
+                context=context,
+            )
+
+        presentation_run = _presentation_run()
+        presentation_tests = _presentation_tests()
+        presentation_run >> presentation_tests
     
     @task(task_id="end")
     def _end_task():
@@ -131,11 +163,11 @@ def dev_dbt_transformations():
     start = _start()
     raw_tests = _raw_tests()
     staging_tasks = _staging_tasks()
-    print_status = _print_status(staging_tasks)
+    presentation_tasks = _presentation_tasks()
     end = _end_task()
 
     # DAG dependencies
-    start >> raw_tests >> staging_tasks >> print_status >> end
+    start >> raw_tests >> staging_tasks >> presentation_tasks >> end
 
 # Create DAG instance
 downstream_dag = dev_dbt_transformations()

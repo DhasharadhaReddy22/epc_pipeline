@@ -51,6 +51,8 @@ services:
   dbt:
     container_name: dbt
     image: dbt-snowflake:custom
+    ports:
+      - 8081:8081
     volumes:
       - ./dbt/dbt_epc:/usr/app
       - ./dbt/profiles.yml:/home/dbt_user/.dbt/profiles.yml

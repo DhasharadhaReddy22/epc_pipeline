@@ -15,7 +15,7 @@ with raw_with_audit as (
 )
 
 select
-    r.*,
-    to_char(audit_ts, 'YYYY-MM') as load_month
-from raw_with_audit r
-{{ get_incremental_filter('r.audit_ts') }}
+    ra.*,
+    to_char(ra.audit_ts, 'YYYY-MM') as load_month
+from raw_with_audit ra
+{{ get_incremental_filter('ra.audit_ts') }}

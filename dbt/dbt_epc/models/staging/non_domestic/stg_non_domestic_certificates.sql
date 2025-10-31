@@ -2,10 +2,12 @@
     materialized='incremental',
     unique_key='lmk_key',
     cluster_by=['load_month'],
-    tags=['staging']
+    tags=['staging'],
+    on_schema_change='sync_all_columns'
 ) }}
 
-with raw_with_audit as (
+with delta as (
+
     select 
         r.*,
         a.audit_ts
@@ -15,7 +17,9 @@ with raw_with_audit as (
 )
 
 select
-    ra.*,
-    to_char(ra.audit_ts, 'YYYY-MM') as load_month
-from raw_with_audit ra
-{{ get_incremental_filter('ra.audit_ts') }}
+    del.*,
+    date_trunc('month', del.audit_ts) as load_month -- for clustering, truncates to first day of month
+from delta del
+
+-- Generic incremental filter macro
+{{ incremental_filter('del.audit_ts', 'audit_ts') }}

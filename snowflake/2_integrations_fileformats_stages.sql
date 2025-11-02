@@ -26,7 +26,7 @@ CREATE OR REPLACE FILE FORMAT epc_csv_format
     FIELD_DELIMITER = ','
     SKIP_HEADER = 1
     FIELD_OPTIONALLY_ENCLOSED_BY = '"'
-    NULL_IF = ('', 'NULL') -- 'N/A', 'NO DATA!', 'Not recorded', 'INVALID' are being left out for data profiling to perform anomaly detection if necessary
+    NULL_IF = ('', 'NULL', 'null', 'Null') -- 'N/A', 'NO DATA!', 'Not recorded', 'INVALID' are being left out for data profiling to perform anomaly detection if necessary
     EMPTY_FIELD_AS_NULL = TRUE
     ERROR_ON_COLUMN_COUNT_MISMATCH = FALSE
     TRIM_SPACE = TRUE
@@ -48,11 +48,11 @@ GRANT USAGE ON STAGE epc_raw_stage TO ROLE TRANSFORM;
 
 -- create sequence for audit table, it is a NOORDER sequence starting from 1000
 
-CREATE OR REPLACE SEQUENCE RAW_COPY_AUDIT_SEQ
+CREATE OR REPLACE SEQUENCE RAW_AUDIT_ID_SEQ
     START = 1000
     INCREMENT = 1;
 
-GRANT USAGE ON SEQUENCE RAW_COPY_AUDIT_SEQ TO ROLE TRANSFORM;
+GRANT USAGE ON SEQUENCE RAW_AUDIT_ID_SEQ TO ROLE TRANSFORM;
 
 -- verify grants granted to the role before staring the ELT process
 SHOW GRANTS TO ROLE TRANSFORM;

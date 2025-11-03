@@ -36,11 +36,35 @@ models:
       +materialized: view
       +schema: raw
       +tags: ["raw"]
+
     staging:
       +materialized: incremental
       +schema: staging
       +tags: ["staging"]
+
     presentation:
-      +materialized: incremental
       +schema: presentation
       +tags: ["presentation"]
+
+      delta:
+        +materialized: table
+        +tags: ["delta"]
+      
+      view:
+        +materialized: view
+        +tags: ["view"]
+
+      kpi:
+        +materialized: incremental
+        +tags: ["kpi"]
+
+      fact:
+        +materialized: incremental
+        +tags: ["fact"]
+
+snapshots:
+  dbt_epc:
+    dim:
+      +target_schema: presentation
+      +strategy: timestamp
+      +tags: ["dim", "presentation"]

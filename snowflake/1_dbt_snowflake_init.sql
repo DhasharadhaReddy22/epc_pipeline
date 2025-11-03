@@ -11,7 +11,13 @@ GRANT ROLE TRANSFORM TO ROLE ACCOUNTADMIN;
 CREATE WAREHOUSE IF NOT EXISTS COMPUTE_WH;
 GRANT OPERATE ON WAREHOUSE COMPUTE_WH TO ROLE TRANSFORM;
 
--- Step 4: Create the `epc_dbt` user and assign to the transform role
+-- Step 4: Create a database and schema for the project
+CREATE DATABASE IF NOT EXISTS EPC_DB;
+CREATE SCHEMA IF NOT EXISTS EPC_DB.RAW;
+CREATE SCHEMA IF NOT EXISTS EPC_DB.STAGING;
+CREATE SCHEMA IF NOT EXISTS EPC_DB.PRESENTATION;
+
+-- Step 5: Create the `epc_dbt` user and assign to the transform role
 CREATE USER IF NOT EXISTS epc_dbt
   PASSWORD='epc_dbt#123'
   LOGIN_NAME='epc_dbt'
@@ -23,12 +29,6 @@ CREATE USER IF NOT EXISTS epc_dbt
   
 ALTER USER epc_dbt SET TYPE = LEGACY_SERVICE; -- meant for automation (not a human login)
 GRANT ROLE TRANSFORM TO USER epc_dbt;
-
--- Step 5: Create a database and schema for the project
-CREATE DATABASE IF NOT EXISTS EPC_DB;
-CREATE SCHEMA IF NOT EXISTS EPC_DB.RAW;
-CREATE SCHEMA IF NOT EXISTS EPC_DB.STAGING;
-CREATE SCHEMA IF NOT EXISTS EPC_DB.PRESENTATION;
 
 -- Step 6: Grant permissions to the `transform` role, don't forget to grant for integrations, file formats, etc.
 GRANT ALL PRIVILEGES ON WAREHOUSE COMPUTE_WH TO ROLE TRANSFORM;

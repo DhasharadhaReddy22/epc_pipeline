@@ -1,8 +1,7 @@
 {{ config(
     materialized='incremental',
     unique_key='audit_ts',
-    tags=['kpi'],
-    schema='presentation'
+    tags=['kpi']
 ) }}
 
 with energy as (
@@ -32,11 +31,7 @@ with energy as (
 
     from {{ ref('fact_non_dom_energy') }}
     
-    {% if is_incremental() %}
-        where audit_ts > (
-            select coalesce(max(audit_ts), to_date('1970-01-01')) from {{ this }}
-        )
-    {% endif %}
+    {{ incremental_filter('audit_ts') }}
 
     group by audit_ts
 ),

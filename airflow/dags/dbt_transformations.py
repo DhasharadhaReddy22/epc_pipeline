@@ -89,7 +89,7 @@ def dev_dbt_transformations():
             return _run_dbt_in_docker(
                 task_id="dbt_epc_raw_tests",
                 command=(
-                    "bash -c 'dbt test --select tag:raw | tee /tmp/dbt_output.log; "
+                    "bash -c 'dbt test -s tag:raw | tee /tmp/dbt_output.log; "
                     "status=$?; tail -n 1 /tmp/dbt_output.log; exit $status'"
                 ),
                 context=context,
@@ -106,7 +106,7 @@ def dev_dbt_transformations():
             return _run_dbt_in_docker(
                 task_id="dbt_epc_stg_run",
                 command=(
-                    "bash -c 'dbt run --select tag:staging | tee /tmp/dbt_output.log; "
+                    "bash -c 'dbt run -s tag:staging | tee /tmp/dbt_output.log; "
                     "status=$?; tail -n 1 /tmp/dbt_output.log; exit $status'"
                 ),
                 context=context,
@@ -117,7 +117,7 @@ def dev_dbt_transformations():
             return _run_dbt_in_docker(
                 task_id="dbt_epc_stg_tests",
                 command=(
-                    "bash -c 'dbt test --select tag:staging | tee /tmp/dbt_output.log; "
+                    "bash -c 'dbt test -s tag:staging | tee /tmp/dbt_output.log; "
                     "status=$?; tail -n 1 /tmp/dbt_output.log; exit $status'"
                 ),
                 context=context,
@@ -130,31 +130,58 @@ def dev_dbt_transformations():
     @task_group(group_id="presentation_tasks")
     def _presentation_tasks():
 
-        @task(task_id="presentation_run")
-        def _presentation_run(**context):
+        @task(task_id="delta_property_run")
+        def _delta_run(**context):
             return _run_dbt_in_docker(
-                task_id="dbt_epc_presentation_run",
-                command=(
-                    "bash -c 'dbt run --select tag:presentation | tee /tmp/dbt_output.log; "
-                    "status=$?; tail -n 1 /tmp/dbt_output.log; exit $status'"
-                ),
-                context=context,
+                task_id="dbt_epc_delta_run",
+                command="bash -c 'dbt run -s tag:delta | tee /tmp/dbt_output.log; "
+                        "status=$?; tail -n 1 /tmp/dbt_output.log; exit $status'",
+                context=context
+            )
+        
+        @task(task_id="dim_property_snap")
+        def _dim_property_snap(**context):
+            return _run_dbt_in_docker(
+                task_id="dbt_epc_view_run",
+                command="bash -c 'dbt snapshot -s tag:dim | tee /tmp/dbt_output.log; "
+                        "status=$?; tail -n 1 /tmp/dbt_output.log; exit $status'",
+                context=context
             )
 
-        @task(task_id="presentation_tests")
-        def _presentation_tests(**context):
+        @task(task_id="dim_property_view")
+        def _view_run(**context):
             return _run_dbt_in_docker(
-                task_id="dbt_epc_presentation_tests",
-                command=(
-                    "bash -c 'dbt test --select tag:presentation | tee /tmp/dbt_output.log; "
-                    "status=$?; tail -n 1 /tmp/dbt_output.log; exit $status'"
-                ),
-                context=context,
+                task_id="dbt_epc_view_run",
+                command="bash -c 'dbt run -s tag:view | tee /tmp/dbt_output.log; "
+                        "status=$?; tail -n 1 /tmp/dbt_output.log; exit $status'",
+                context=context
             )
 
-        presentation_run = _presentation_run()
-        presentation_tests = _presentation_tests()
-        presentation_run >> presentation_tests
+        @task(task_id="fact_run")
+        def _fact_run(**context):
+            return _run_dbt_in_docker(
+                task_id="dbt_epc_fact_run",
+                command="bash -c 'dbt run -s tag:fact | tee /tmp/dbt_output.log; "
+                        "status=$?; tail -n 1 /tmp/dbt_output.log; exit $status'",
+                context=context
+            )
+
+        @task(task_id="kpi_run")
+        def _kpi_run(**context):
+            return _run_dbt_in_docker(
+                task_id="dbt_epc_kpi_run",
+                command="bash -c 'dbt run -s tag:kpi | tee /tmp/dbt_output.log; "
+                        "status=$?; tail -n 1 /tmp/dbt_output.log; exit $status'",
+                context=context
+            )
+        
+        delta_run = _delta_run()
+        dim_snap = _dim_property_snap()
+        view_run = _view_run()
+        fact_run = _fact_run()
+        kpi_run = _kpi_run()
+
+        delta_run >> dim_snap >> view_run >> fact_run >> kpi_run
     
     @task(task_id="end")
     def _end_task():

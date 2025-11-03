@@ -2,7 +2,6 @@
     materialized='incremental',
     unique_key=['lmk_key', 'audit_ts'],
     tags=['fact'],
-    schema='presentation',
     cluster_by=['audit_ts']
 ) }}
 
@@ -22,8 +21,6 @@ with base as (
 
         lmk_key,
         audit_ts,
-        load_month,
-
         asset_rating,
         asset_rating_band,
         property_type,

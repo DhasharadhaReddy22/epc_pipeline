@@ -1,8 +1,7 @@
 {{ config(
     materialized='incremental',
-    unique_key=['lmk_key', 'audit_ts'],
+    unique_key=['lmk_key', 'recommendation_code', 'audit_ts'],
     tags=['fact'],
-    schema='presentation',
     cluster_by=['audit_ts']
 ) }}
 

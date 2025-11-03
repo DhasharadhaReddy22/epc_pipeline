@@ -1,10 +1,10 @@
 {{ config(
     materialized='table',
-    schema='presentation',
     tags=['delta']
 )}}
 
--- Determine whether dim_property exists (to detect first run)
+-- Determine whether dim_property exists (to detect first run), 
+-- if first run set some old date as max timestamp
 {% set dim_relation = adapter.get_relation(
     database=target.database,
     schema='PRESENTATION',

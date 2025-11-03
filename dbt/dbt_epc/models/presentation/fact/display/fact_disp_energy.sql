@@ -2,7 +2,6 @@
     materialized='incremental',
     unique_key=['lmk_key', 'audit_ts'],
     tags=['fact'],
-    schema='presentation',
     cluster_by=['audit_ts']
 ) }}
 
@@ -10,7 +9,6 @@ with base as (
     select
         lmk_key,
         audit_ts,
-        load_month,
         current_operational_rating,
         yr1_operational_rating,
         yr2_operational_rating,

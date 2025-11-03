@@ -1,7 +1,7 @@
 {{ config(
     materialized='incremental',
-    unique_key='lmk_key',
-    cluster_by=['load_month'],
+    unique_key=['lmk_key', 'audit_ts'],
+    cluster_by=['audit_ts'],
     tags=['staging'],
     on_schema_change='sync_all_columns'
 ) }}
@@ -14,12 +14,8 @@ with delta as (
     from {{ source('raw', 'raw_domestic_recommendations') }} r
     join {{ source('raw', 'raw_copy_audit') }} a 
       on r.audit_id = a.audit_id
+    {{ incremental_filter('audit_ts') }}
 )
 
-select
-    del.*,
-    date_trunc('month', del.audit_ts) as load_month -- for clustering, truncates to first day of month
-from delta del
-
--- Generic incremental filter macro
-{{ incremental_filter('del.audit_ts', 'audit_ts') }}
+select *
+from delta

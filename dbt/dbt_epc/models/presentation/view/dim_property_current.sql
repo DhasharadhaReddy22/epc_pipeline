@@ -1,4 +1,7 @@
-{{ config(materialized='view', tags=['view']) }}
+{{ config(
+    materialized='view', 
+    tags=['view']
+) }}
 
 select
     *,

@@ -1,0 +1,101 @@
+.
+├── README.md
+├── airflow
+│   ├── dags
+│   │   ├── dbt_transformations.py
+│   │   ├── dev_ingestion.py
+│   │   └── s3_to_snowflake.py
+│   └── logs
+├── dbt
+│   ├── dbt_epc
+│   │   ├── README.md
+│   │   ├── analyses
+│   │   ├── dbt_packages
+│   │   │   ├── dbt_date
+│   │   │   └── dbt_expectations
+│   │   ├── dbt_project.yml
+│   │   ├── logs
+│   │   ├── macros
+│   │   │   ├── custom_schema.sql
+│   │   │   └── incremental_filter.sql
+│   │   ├── models
+│   │   │   ├── presentation
+│   │   │   │   ├── delta
+│   │   │   │   │   └── delta_property.sql
+│   │   │   │   ├── fact
+│   │   │   │   │   ├── display
+│   │   │   │   │   │   ├── fact_disp_energy.sql
+│   │   │   │   │   │   └── fact_disp_recom.sql
+│   │   │   │   │   ├── domestic
+│   │   │   │   │   │   ├── fact_dom_energy.sql
+│   │   │   │   │   │   └── fact_dom_recom.sql
+│   │   │   │   │   └── non_domestic
+│   │   │   │   │       ├── fact_non_dom_energy.sql
+│   │   │   │   │       └── fact_non_dom_recom.sql
+│   │   │   │   ├── kpi
+│   │   │   │   │   ├── display
+│   │   │   │   │   │   ├── kpi_disp_rating.sql
+│   │   │   │   │   │   └── kpi_disp_recom.sql
+│   │   │   │   │   ├── domestic
+│   │   │   │   │   │   ├── kpi_dom_rating.sql
+│   │   │   │   │   │   └── kpi_dom_recom.sql
+│   │   │   │   │   └── non_domestic
+│   │   │   │   │       ├── kpi_non_dom_rating.sql
+│   │   │   │   │       └── kpi_non_dom_recom.sql
+│   │   │   │   └── view
+│   │   │   │       └── dim_property_current.sql
+│   │   │   ├── raw
+│   │   │   │   └── properties.yml
+│   │   │   └── staging
+│   │   │       ├── display
+│   │   │       │   ├── stg_display_certificates.sql
+│   │   │       │   └── stg_display_recommendations.sql
+│   │   │       ├── domestic
+│   │   │       │   ├── stg_domestic_certificates.sql
+│   │   │       │   └── stg_domestic_recommendations.sql
+│   │   │       ├── non_domestic
+│   │   │       │   ├── stg_non_domestic_certificates.sql
+│   │   │       │   └── stg_non_domestic_recommendations.sql
+│   │   │       └── properties.yml
+│   │   ├── package-lock.yml
+│   │   ├── packages.yml
+│   │   ├── seeds
+│   │   ├── snapshots
+│   │   │   └── dim
+│   │   │       └── dim_property.sql
+│   │   ├── target
+│   │   └── tests
+│   ├── logs
+|   ├── Dockerfile.dbt-snowflake
+│   └── profiles.yml
+├── docs/
+│   ├── PBI_Dashboard.png
+│   ├── PBI_Data_Model.png
+│   ├── dbt-dag.png
+│   ├── dev_dbt_transformations-graph.png
+│   ├── dev_ingestion-graph.png
+│   ├── dev_s3_to_snowflake-graph.png
+│   └── file_structure.txt
+├── docker-compose.yml
+├── epc-dashboard.pbix
+├── postgres
+│   └── init.sql
+├── pyproject.toml
+├── snowflake
+│   ├── 1_dbt_snowflake_init.sql
+│   ├── 2_integrations_fileformats_stages.sql
+│   ├── 3_raw_tables_ddl.sql
+│   └── s3_copy.sql
+├── src
+│   ├── __init__.py
+│   ├── ingestion
+│   │   ├── __init__.py
+│   │   ├── epc_ingestion.py
+│   │   └── s3_to_snowflake.py
+│   └── utils
+│       ├── __init__.py
+│       ├── api_client.py
+│       ├── bucket_client.py
+│       ├── file_ops.py
+│       └── logger.py
+└── uv.lock

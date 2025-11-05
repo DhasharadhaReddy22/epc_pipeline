@@ -1,0 +1,58 @@
+dbt/
+├── Dockerfile.dbt-snowflake
+├── dbt_epc
+│   ├── README.md
+│   ├── analyses
+│   ├── dbt_project.yml
+│   ├── macros
+│   │   ├── custom_schema.sql
+│   │   └── incremental_filter.sql
+│   ├── models
+│   │   ├── presentation
+│   │   │   ├── delta
+│   │   │   │   └── delta_property.sql
+│   │   │   ├── fact
+│   │   │   │   ├── display
+│   │   │   │   │   ├── fact_disp_energy.sql
+│   │   │   │   │   └── fact_disp_recom.sql
+│   │   │   │   ├── domestic
+│   │   │   │   │   ├── fact_dom_energy.sql
+│   │   │   │   │   └── fact_dom_recom.sql
+│   │   │   │   └── non_domestic
+│   │   │   │       ├── fact_non_dom_energy.sql
+│   │   │   │       └── fact_non_dom_recom.sql
+│   │   │   ├── kpi
+│   │   │   │   ├── display
+│   │   │   │   │   ├── kpi_disp_rating.sql
+│   │   │   │   │   └── kpi_disp_recom.sql
+│   │   │   │   ├── domestic
+│   │   │   │   │   ├── kpi_dom_rating.sql
+│   │   │   │   │   └── kpi_dom_recom.sql
+│   │   │   │   └── non_domestic
+│   │   │   │       ├── kpi_non_dom_rating.sql
+│   │   │   │       └── kpi_non_dom_recom.sql
+│   │   │   └── view
+│   │   │       └── dim_property_current.sql
+│   │   ├── raw
+│   │   │   └── properties.yml
+│   │   └── staging
+│   │       ├── display
+│   │       │   ├── stg_display_certificates.sql
+│   │       │   └── stg_display_recommendations.sql
+│   │       ├── domestic
+│   │       │   ├── stg_domestic_certificates.sql
+│   │       │   └── stg_domestic_recommendations.sql
+│   │       ├── non_domestic
+│   │       │   ├── stg_non_domestic_certificates.sql
+│   │       │   └── stg_non_domestic_recommendations.sql
+│   │       └── properties.yml
+│   ├── package-lock.yml
+│   ├── packages.yml
+│   ├── seeds
+│   ├── snapshots
+│   │   └── dim
+│   │       └── dim_property.sql
+│   └── tests
+├── logs
+│   └── dbt.log
+└── profiles.yml

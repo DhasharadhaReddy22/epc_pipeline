@@ -35,7 +35,7 @@ The pipeline ingests monthly zips from the [Energy Performance Certificates API]
 | Component | Technology | Role |
 |------------|-------------|--------------|
 | Ingestion | Apache Airflow | Orchestrates data extraction and loading into Snowflake |
-| Storage | AWS S3 | Stores raw (Bronze) data files from source APIs |
+| Storage | AWS S3 | Stores raw data files from source APIs |
 | Data Warehouse | Snowflake | Manages structured data for transformation |
 | Transformation | DBT | Models data, handles SCD2 snapshots, and testing |
 | Containerization | Docker | Ensures reproducible local and cloud environments |
@@ -316,7 +316,13 @@ Once containers are running:
   dbt debug
   ```
 
-  This confirms that the `profiles.yml` file is configured correctly for Snowflake. If not make sure you have created the right snowflake objects, roles, and users and have also mentioned the right Account > Connect a tool to Snowflake > Account Identifier (the one with the hyphen `-`) 
+  This confirms that the `profiles.yml` file is configured correctly for Snowflake. If not make sure you have created the right snowflake objects, roles, and users and have also mentioned the right Account > Connect a tool to Snowflake > Account Identifier (the one with the hyphen `-`)
+
+* Downlaod the necessary DBT packages:
+
+   ```bash
+   dbt deps
+   ```
 
 * Verify Airflow–Snowflake connection:
   Check Airflow logs for auto-creation of the Snowflake connection. A default connection (`snowflake_default`) should appear in the Airflow UI.
@@ -353,6 +359,13 @@ With all services running and connections validated:
 
 *(Tip: Always confirm S3 → Snowflake → DBT connectivity before triggering all DAGs together. Check for tutorials on how to do testing.)*
 
+* To get the DBT docs:
+
+   ```bash
+   dbt docs generate
+   dbt docs serve --port 8081 --host 0.0.0.0
+   ```
+
 #### 11. System Cleanup
 
 If you want to remove all containers, networks, and volumes for a clean rebuild:
@@ -374,7 +387,7 @@ The pipeline implements multiple layers of data validation and integrity checks 
    Standard DBT tests such as `unique`, `not_null`, and `relationships` are applied across raw, staging, and presentation models to enforce key integrity and prevent referential inconsistencies.
 
 2. Extended Data Quality via `dbt-expectations`:
-   Advanced validation rules leverage the `dbt-expectations` package for comprehensive column-level quality checks, including:
+   Advanced validation rules leverage the [dbt-expectations](https://hub.getdbt.com/metaplane/dbt_expectations/latest/) package for comprehensive column-level quality checks, including:
 
    * Range validation: `expect_column_values_to_be_between` — ensures numeric or date fields fall within expected boundaries.
    * Accepted values validation: `expect_column_distinct_values_to_be_in_set` — enforces categorical columns (e.g., EPC bands, property types) to contain only valid predefined values.
@@ -434,7 +447,7 @@ The pipeline implements multiple layers of data validation and integrity checks 
 
 9. Enhanced Testing Framework:
 
-   * The `dbt-expectations` package is integrated for advanced data quality assertions (e.g., ranges and accepted values checks) beyond standard dbt tests.
+   * The [dbt-expectations](https://hub.getdbt.com/metaplane/dbt_expectations/latest/) package is integrated for advanced data quality assertions (e.g., ranges and accepted values checks) beyond standard dbt tests.
 
 10. Role-Based Access Control (RBAC):
 

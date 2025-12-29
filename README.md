@@ -27,7 +27,7 @@ This README documents the Monthly EPC Data Engineering Pipeline built with **Air
 
 The pipeline ingests monthly zips from the [Energy Performance Certificates API](https://epc.opendatacommunities.org/docs/api), stores the required raw CSVs (certificates and recommendations) in **S3**, loads them into **Snowflake** (with auditing), and runs **DBT transformations** to produce staging, fact, and KPI models, SCD2 dimension snapshot, and view on current snapshots, which are used by **Power BI dashboards**.
 
-It is a **metadata-driven pipeline** as it accepts certain parameters/metadata, as Airflow that can influence the number of files and the particular timestamped data to be processed dynamically, seperating the **what** and the **how** of the pipeline, making it scalable and re-usable for other use cases.
+It is a **metadata-driven pipeline** as it accepts certain parameters/metadata, as Airflow variables that can influence the number of files and the particular timestamped data to be processed dynamically, seperating the **what** and the **how** of the pipeline, making it scalable and re-usable for other use cases.
 
 ---
 

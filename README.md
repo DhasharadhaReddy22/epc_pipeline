@@ -7,16 +7,17 @@ This README documents the Monthly EPC Data Engineering Pipeline built with **Air
 ## Table of Contents
 1. [Project Overview](#project-overview)
 2. [Architecture](#architecture)
-3. [Repository Layout](#repository-layout)
-4. [Airflow DAGs](#airflow-dags)
-5. [Snowflake Setup](#snowflake-setup)
-6. [DBT Project](#dbt-project)
-7. [Power BI Layer](#power-bi-layer)
-8. [Running the Project](#running-the-project)
-9. [Data Quality](#data-quality)
-10. [Design Decisions](#design-decisions)
-11. [Future Enhancements](#future-enhancements)
-12. [Links](#links)
+3. [Data Contract & Modeling Details](#data-contract--modeling-details)
+4. [Repository Layout](#repository-layout)
+5. [Airflow DAGs](#airflow-dags)
+6. [Snowflake Setup](#snowflake-setup)
+7. [DBT Project](#dbt-project)
+8. [Power BI Layer](#power-bi-layer)
+9. [Running the Project](#running-the-project)
+10. [Data Quality](#data-quality)
+11. [Design Decisions](#design-decisions)
+12. [Future Enhancements](#future-enhancements)
+13. [Links](#links)
 
 ---
 
@@ -56,6 +57,12 @@ API → Ingestion DAG → S3 → s3_to_snowflake DAG → Snowflake RAW Tables �
 - [Docker Compose File](docker-compose.yml)
 - [Custom DBT-Snowflake Image](dbt/Dockerfile.dbt-snowflake)
 - [.env Template](copy.env)
+
+---
+
+## Data Contract & Modeling Details
+
+Detailed documentation on the EPC dataset, data contract assumptions, surrogate key strategy, snapshotting, and data quality enforcement is available here: [Data Contract](./Data-Contract.md)
 
 ---
 

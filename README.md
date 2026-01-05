@@ -5,7 +5,7 @@ This README documents the Monthly EPC Data Engineering Pipeline built with **Air
 ---
 
 ## Table of Contents
-1. [Project Overview](#project-overview)
+1. [Project Overview](#project-overview-metadata-driven-design)
 2. [Architecture](#architecture)
 3. [Data Contract & Modeling Details](#data-contract--modeling-details)
 4. [Repository Layout](#repository-layout)
@@ -21,12 +21,14 @@ This README documents the Monthly EPC Data Engineering Pipeline built with **Air
 
 ---
 
-## Project Overview
+## Project Overview: Metadata-Driven Design
 
 **Name:** Monthly EPC Pipeline  
 **Purpose:** An `ELT` pipeline which performs ingestion and transformation of EPC (Energy Performance Certificates) data for England & Wales from the Department for Levelling Up, Housing & Communities, at a monthly frequency.
 
 The pipeline ingests monthly zips from the [Energy Performance Certificates API](https://epc.opendatacommunities.org/docs/api), stores the required raw CSVs (certificates and recommendations) in **S3**, loads them into **Snowflake** (with auditing), and runs **DBT transformations** to produce staging, fact, and KPI models, SCD2 dimension snapshot, and view on current snapshots, which are used by **Power BI dashboards**.
+
+It is a **metadata-driven pipeline** as it accepts certain parameters/metadata, as Airflow variables that can influence the number of files and the particular timestamped data to be processed dynamically, seperating the **what** and the **how** of the pipeline, making it scalable and re-usable for other use cases.
 
 ---
 
@@ -88,14 +90,14 @@ Detailed documentation on the EPC dataset, data contract assumptions, surrogate 
 ## Airflow DAGs
 
 1. [dev_ingestion](airflow/dags/dev_ingestion.py)
-Fetches latest EPC data, extracts, processes, and uploads to S3.
+Fetches latest (by default) EPC data, extracts, processes, and uploads to S3. The pipeline also leverages Airflow Variables to pass runtime parameters (such as specific timestamps or file counts). This allows the DAG to dynamically adapt its workload without code changes, enabling targeted re-runs or backfills for specific data partitions.
 
 <p align="center">
   <img src="docs/dev_ingestion-graph.png" alt="Ingestion DAG" width="1000"/>
 </p>
 
 2. [s3_to_snowflake](airflow/dags/s3_to_snowflake.py)
-Copies CSVs from S3 to Snowflake using COPY INTO commands and maintains an audit log.
+Copies CSVs from S3 to Snowflake using COPY INTO commands and maintains an audit log, dynamically generates COPY INTO commands for Snowflake only for files that have not been successfully processed in previous runs, preventing data duplication and optimizing compute costs using Airflow's **Dynamically Mapped Tasks**, making it **State-Aware Loading (Idempotency)**.
 
 <p align="center">
   <img src="docs/dev_s3_to_snowflake-graph.png" alt="S3 to Snowflake DAG" width="1100"/>

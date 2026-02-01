@@ -1,0 +1,207 @@
+table KPI_DOM_RATING
+	lineageTag: 31d3dcd1-60d8-4cc4-aaab-980bb4676604
+
+	column AUDIT_TS
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: ca4e9a4a-a9fb-495e-aab8-d4bd8c7bedba
+		summarizeBy: none
+		sourceColumn: AUDIT_TS
+
+		variation Variation
+			isDefault
+			relationship: f7df0d95-d026-40a9-967d-409d5d2485b8
+			defaultHierarchy: LocalDateTable_67a639cd-192b-427e-8cf3-403aa815cdf4.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column MONTHLY_AVG_EFFICIENCY
+		dataType: double
+		sourceProviderType: decimal(38, 2)
+		lineageTag: 9a2286d8-47a6-4c7f-933f-6191fdd4abad
+		summarizeBy: sum
+		sourceColumn: MONTHLY_AVG_EFFICIENCY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MONTHLY_POTENTIAL_EFFICIENCY
+		dataType: double
+		sourceProviderType: decimal(38, 2)
+		lineageTag: e7ad7ccc-d322-4325-9c22-4657ceb29449
+		summarizeBy: sum
+		sourceColumn: MONTHLY_POTENTIAL_EFFICIENCY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MONTHLY_AVG_CO2_TONNES
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 88707578-2fcc-4773-b8a1-f343242ce4fc
+		summarizeBy: sum
+		sourceColumn: MONTHLY_AVG_CO2_TONNES
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MONTHLY_AVG_CO2_PER_M2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: ac5fe730-c420-4f1e-858d-e121bc7f768b
+		summarizeBy: sum
+		sourceColumn: MONTHLY_AVG_CO2_PER_M2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MONTHLY_AVG_CONSUMPTION_PER_M2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 0c9d8b27-ea04-49bf-9ac4-1494fb8490a6
+		summarizeBy: sum
+		sourceColumn: MONTHLY_AVG_CONSUMPTION_PER_M2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MONTHLY_AVG_ENERGY_COST
+		dataType: double
+		sourceProviderType: double
+		lineageTag: b8744927-bc19-4454-9d39-61506c41e6af
+		summarizeBy: sum
+		sourceColumn: MONTHLY_AVG_ENERGY_COST
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PCT_WITH_MAINS_GAS
+		dataType: double
+		sourceProviderType: decimal(23, 2)
+		lineageTag: 4798cc8f-5176-4673-9a55-85e1f2c74ab3
+		summarizeBy: sum
+		sourceColumn: PCT_WITH_MAINS_GAS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PCT_HIGH_RATING
+		dataType: double
+		sourceProviderType: decimal(23, 2)
+		lineageTag: bc4eb36b-10c1-48a3-80cd-432e2c6238c1
+		summarizeBy: sum
+		sourceColumn: PCT_HIGH_RATING
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_AVG_EFFICIENCY
+		dataType: double
+		sourceProviderType: decimal(38, 2)
+		lineageTag: 967b44b3-e4a5-4c53-ad9a-cb19e1e1b7b9
+		summarizeBy: sum
+		sourceColumn: GLOBAL_AVG_EFFICIENCY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_POTENTIAL_EFFICIENCY
+		dataType: double
+		sourceProviderType: decimal(38, 2)
+		lineageTag: 55e26c2d-b2e2-40ee-b969-40835241b777
+		summarizeBy: sum
+		sourceColumn: GLOBAL_POTENTIAL_EFFICIENCY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_AVG_CO2_TONNES
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 3ffaecde-c08b-49af-862c-42d8c289a7e1
+		summarizeBy: sum
+		sourceColumn: GLOBAL_AVG_CO2_TONNES
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_AVG_CO2_PER_M2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 7bf1195f-e531-479f-b6f2-1e902f0b4a7c
+		summarizeBy: sum
+		sourceColumn: GLOBAL_AVG_CO2_PER_M2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_AVG_CONSUMPTION_PER_M2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 0c72e065-6dc6-455f-bcc4-c327e2653ccf
+		summarizeBy: sum
+		sourceColumn: GLOBAL_AVG_CONSUMPTION_PER_M2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_AVG_ENERGY_COST
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 1dc99e01-514c-448f-902c-94b6d35cd892
+		summarizeBy: sum
+		sourceColumn: GLOBAL_AVG_ENERGY_COST
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_PCT_WITH_MAINS_GAS
+		dataType: double
+		sourceProviderType: decimal(23, 2)
+		lineageTag: 9084c005-5365-42ec-8ec6-0e6b3ba66a8a
+		summarizeBy: sum
+		sourceColumn: GLOBAL_PCT_WITH_MAINS_GAS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_PCT_HIGH_RATING
+		dataType: double
+		sourceProviderType: decimal(23, 2)
+		lineageTag: b3ee9b52-ac83-48f4-bc98-13800fa5fdb9
+		summarizeBy: sum
+		sourceColumn: GLOBAL_PCT_HIGH_RATING
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition KPI_DOM_RATING = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases("gxc83121.us-east-1.snowflakecomputing.com","COMPUTE_WH",[Implementation="2.0"]),
+				    EPC_DB_Database = Source{[Name="EPC_DB",Kind="Database"]}[Data],
+				    PRESENTATION_Schema = EPC_DB_Database{[Name="PRESENTATION",Kind="Schema"]}[Data],
+				    KPI_DOM_RATING_Table = PRESENTATION_Schema{[Name="KPI_DOM_RATING",Kind="Table"]}[Data]
+				in
+				    KPI_DOM_RATING_Table
+
+	annotation PBI_ResultType = Table
+

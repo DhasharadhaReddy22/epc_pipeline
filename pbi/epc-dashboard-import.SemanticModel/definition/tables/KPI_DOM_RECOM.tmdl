@@ -1,0 +1,163 @@
+table KPI_DOM_RECOM
+	lineageTag: e180fbc5-2b23-4332-8f0c-df8d59dfdbd1
+
+	column AUDIT_TS
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: dceed8d2-0bb4-4405-8c03-ee713ac2f64a
+		summarizeBy: none
+		sourceColumn: AUDIT_TS
+
+		variation Variation
+			isDefault
+			relationship: 59f0b1e0-7414-48d4-8d23-5904f162de7a
+			defaultHierarchy: LocalDateTable_26131a46-503c-419f-a1bb-91d273dd7e92.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column MONTHLY_AVG_RECOMMENDATIONS_PER_PROPERTY
+		dataType: double
+		sourceProviderType: double
+		lineageTag: d795936a-7f64-4611-a579-0f0984b75558
+		summarizeBy: sum
+		sourceColumn: MONTHLY_AVG_RECOMMENDATIONS_PER_PROPERTY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TOTAL_PROPERTIES
+		dataType: double
+		sourceProviderType: decimal(18, 0)
+		lineageTag: 27a2ff05-19dd-4870-96b0-42707e5faee2
+		summarizeBy: sum
+		sourceColumn: TOTAL_PROPERTIES
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TOTAL_RECOMMENDATIONS
+		dataType: double
+		sourceProviderType: decimal(18, 0)
+		lineageTag: 3f7cbd74-38d1-4f23-aec5-f879f34d40ed
+		summarizeBy: sum
+		sourceColumn: TOTAL_RECOMMENDATIONS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PCT_LOW_COST_RANGE
+		dataType: double
+		sourceProviderType: decimal(23, 2)
+		lineageTag: 1bec9b39-6cc4-4cdc-a2ef-f108421a6627
+		summarizeBy: sum
+		sourceColumn: PCT_LOW_COST_RANGE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PCT_MEDIUM_COST_RANGE
+		dataType: double
+		sourceProviderType: decimal(23, 2)
+		lineageTag: c3129d18-1c34-4be3-b2ac-2330912718a7
+		summarizeBy: sum
+		sourceColumn: PCT_MEDIUM_COST_RANGE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PCT_HIGH_COST_RANGE
+		dataType: double
+		sourceProviderType: decimal(23, 2)
+		lineageTag: 5a6fec9b-3d04-409b-9963-63045b7feb46
+		summarizeBy: sum
+		sourceColumn: PCT_HIGH_COST_RANGE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_AVG_RECOMMENDATIONS_PER_PROPERTY
+		dataType: double
+		sourceProviderType: double
+		lineageTag: b2ce81cc-5118-4465-982e-99acdfc00109
+		summarizeBy: sum
+		sourceColumn: GLOBAL_AVG_RECOMMENDATIONS_PER_PROPERTY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_TOTAL_PROPERTIES
+		dataType: double
+		sourceProviderType: decimal(18, 0)
+		lineageTag: 3f0f5d8b-0872-41a6-bc36-7eab8e8674c6
+		summarizeBy: sum
+		sourceColumn: GLOBAL_TOTAL_PROPERTIES
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_TOTAL_RECOMMENDATIONS
+		dataType: double
+		sourceProviderType: decimal(18, 0)
+		lineageTag: 26e40904-56bb-4099-a428-ac224f57cc5a
+		summarizeBy: sum
+		sourceColumn: GLOBAL_TOTAL_RECOMMENDATIONS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_PCT_LOW_COST_RANGE
+		dataType: double
+		sourceProviderType: decimal(23, 2)
+		lineageTag: bf1a1ae7-b678-45d5-ba3c-42db09d2c234
+		summarizeBy: sum
+		sourceColumn: GLOBAL_PCT_LOW_COST_RANGE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_PCT_MEDIUM_COST_RANGE
+		dataType: double
+		sourceProviderType: decimal(23, 2)
+		lineageTag: c210bcf3-2278-45c3-b89c-e6e95d56a8e2
+		summarizeBy: sum
+		sourceColumn: GLOBAL_PCT_MEDIUM_COST_RANGE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_PCT_HIGH_COST_RANGE
+		dataType: double
+		sourceProviderType: decimal(23, 2)
+		lineageTag: 1e2c87b7-435c-4930-b039-81094747f782
+		summarizeBy: sum
+		sourceColumn: GLOBAL_PCT_HIGH_COST_RANGE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition KPI_DOM_RECOM = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases("gxc83121.us-east-1.snowflakecomputing.com","COMPUTE_WH",[Implementation="2.0"]),
+				    EPC_DB_Database = Source{[Name="EPC_DB",Kind="Database"]}[Data],
+				    PRESENTATION_Schema = EPC_DB_Database{[Name="PRESENTATION",Kind="Schema"]}[Data],
+				    KPI_DOM_RECOM_Table = PRESENTATION_Schema{[Name="KPI_DOM_RECOM",Kind="Table"]}[Data]
+				in
+				    KPI_DOM_RECOM_Table
+
+	annotation PBI_ResultType = Table
+

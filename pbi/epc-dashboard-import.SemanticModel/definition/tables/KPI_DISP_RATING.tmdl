@@ -1,0 +1,97 @@
+table KPI_DISP_RATING
+	lineageTag: 418856fb-9fbe-4043-abdc-241501f952b7
+
+	column AUDIT_TS
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: fd816565-a9f9-4cb6-8ad3-b407075fe15e
+		summarizeBy: none
+		sourceColumn: AUDIT_TS
+
+		variation Variation
+			isDefault
+			relationship: acd96fc8-7aac-4ec6-bff3-970352bcaa49
+			defaultHierarchy: LocalDateTable_3077f684-c88e-4524-aab3-c95777532fc1.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column MONTHLY_AVG_OPERATIONAL_RATING
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 0efa3b7e-53a8-4969-8fe7-acb781758cae
+		summarizeBy: sum
+		sourceColumn: MONTHLY_AVG_OPERATIONAL_RATING
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PCT_HIGH_BAND
+		dataType: double
+		sourceProviderType: decimal(23, 2)
+		lineageTag: acc477a7-a88f-4fb8-b1a7-0e61f83a8410
+		summarizeBy: sum
+		sourceColumn: PCT_HIGH_BAND
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MONTHLY_AVG_CO2_PER_M2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: c3d3728a-5e0b-4d76-8281-6e66b596180b
+		summarizeBy: sum
+		sourceColumn: MONTHLY_AVG_CO2_PER_M2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_AVG_OPERATIONAL_RATING
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 9ffb10b4-a4e4-4a95-b6c3-94ac442b57f0
+		summarizeBy: sum
+		sourceColumn: GLOBAL_AVG_OPERATIONAL_RATING
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_PCT_HIGH_BAND
+		dataType: double
+		sourceProviderType: decimal(23, 2)
+		lineageTag: 7d66be00-823d-4290-92aa-2e78f2b45526
+		summarizeBy: sum
+		sourceColumn: GLOBAL_PCT_HIGH_BAND
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_AVG_CO2_PER_M2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 6dbce248-43b0-4c98-8bdb-4bd05f89c0b1
+		summarizeBy: sum
+		sourceColumn: GLOBAL_AVG_CO2_PER_M2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition KPI_DISP_RATING = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases("gxc83121.us-east-1.snowflakecomputing.com","COMPUTE_WH",[Implementation="2.0"]),
+				    EPC_DB_Database = Source{[Name="EPC_DB",Kind="Database"]}[Data],
+				    PRESENTATION_Schema = EPC_DB_Database{[Name="PRESENTATION",Kind="Schema"]}[Data],
+				    KPI_DISP_RATING_Table = PRESENTATION_Schema{[Name="KPI_DISP_RATING",Kind="Table"]}[Data]
+				in
+				    KPI_DISP_RATING_Table
+
+	annotation PBI_ResultType = Table
+

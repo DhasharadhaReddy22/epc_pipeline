@@ -1,0 +1,393 @@
+table FACT_DISP_ENERGY
+	lineageTag: 32dd2a86-8162-459f-9033-defb74ebf7f5
+
+	column LMK_KEY
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: f0de371e-1948-4c72-894b-201a487dfe4f
+		summarizeBy: none
+		sourceColumn: LMK_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column AUDIT_TS
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 9409e8c8-2ad2-46bf-81f8-25c851f065c2
+		summarizeBy: none
+		sourceColumn: AUDIT_TS
+
+		annotation SummarizationSetBy = Automatic
+
+	column CURRENT_OPERATIONAL_RATING
+		dataType: double
+		sourceProviderType: double
+		lineageTag: fe12dcdc-9fa4-4be5-9edf-a02adadf597d
+		summarizeBy: sum
+		sourceColumn: CURRENT_OPERATIONAL_RATING
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column YR1_OPERATIONAL_RATING
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 3b06cb11-5574-4aee-a6bb-66a87a2063cb
+		summarizeBy: sum
+		sourceColumn: YR1_OPERATIONAL_RATING
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column YR2_OPERATIONAL_RATING
+		dataType: double
+		sourceProviderType: double
+		lineageTag: db50bdcd-c39f-4a65-8c7c-eec8a5aaca5c
+		summarizeBy: sum
+		sourceColumn: YR2_OPERATIONAL_RATING
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column AIRCON_KW_RATING
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 62733c8f-c6d2-4c41-afed-ab1dab4a38b1
+		summarizeBy: sum
+		sourceColumn: AIRCON_KW_RATING
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ESTIMATED_AIRCON_KW_RATING
+		dataType: double
+		sourceProviderType: double
+		lineageTag: a8d39e2d-0a0a-45f2-aa94-dc0a504ad39c
+		summarizeBy: sum
+		sourceColumn: ESTIMATED_AIRCON_KW_RATING
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ELECTRIC_CO2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: f5c2ec01-a9b1-4861-83fe-bf9973f8276a
+		summarizeBy: sum
+		sourceColumn: ELECTRIC_CO2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column YR1_ELECTRICITY_CO2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: f36b23e7-8208-481c-ac88-775dce597687
+		summarizeBy: sum
+		sourceColumn: YR1_ELECTRICITY_CO2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column YR2_ELECTRICITY_CO2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 272cf8cc-1af6-41fb-8404-4dbf7e6aaa53
+		summarizeBy: sum
+		sourceColumn: YR2_ELECTRICITY_CO2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column HEATING_CO2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: a0fdb2ff-7e4b-488f-a0bc-14205dee1c3e
+		summarizeBy: sum
+		sourceColumn: HEATING_CO2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column YR1_HEATING_CO2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: f54ebdc6-e10b-4a7a-ad35-d39589bbf605
+		summarizeBy: sum
+		sourceColumn: YR1_HEATING_CO2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column YR2_HEATING_CO2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: b3d90594-db3a-43e8-83d1-e14ffa92a5e5
+		summarizeBy: sum
+		sourceColumn: YR2_HEATING_CO2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column RENEWABLES_CO2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 66b870df-2c38-469a-bb84-7db9963b5ee6
+		summarizeBy: sum
+		sourceColumn: RENEWABLES_CO2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column YR1_RENEWABLES_CO2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: a48cd4a1-2b90-46e8-b06c-6d195b99d9eb
+		summarizeBy: sum
+		sourceColumn: YR1_RENEWABLES_CO2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column YR2_RENEWABLES_CO2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 9262983e-c4c1-464a-8bbe-533b43f98231
+		summarizeBy: sum
+		sourceColumn: YR2_RENEWABLES_CO2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column RENEWABLES_ELECTRICAL
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 67256c7c-13de-4741-97df-53069f86bc9f
+		summarizeBy: sum
+		sourceColumn: RENEWABLES_ELECTRICAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column RENEWABLES_FUEL_THERMAL
+		dataType: double
+		sourceProviderType: decimal(38, 0)
+		lineageTag: 6ff7b835-1d24-491b-a778-aa892e1c0e33
+		summarizeBy: sum
+		sourceColumn: RENEWABLES_FUEL_THERMAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ANNUAL_THERMAL_FUEL_USAGE
+		dataType: double
+		sourceProviderType: decimal(38, 0)
+		lineageTag: 246093d3-5593-49cd-926b-4a8b4faaca30
+		summarizeBy: sum
+		sourceColumn: ANNUAL_THERMAL_FUEL_USAGE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ANNUAL_ELECTRICAL_FUEL_USAGE
+		dataType: double
+		sourceProviderType: decimal(38, 0)
+		lineageTag: 857206aa-ce7c-42b4-ace9-46160b868219
+		summarizeBy: sum
+		sourceColumn: ANNUAL_ELECTRICAL_FUEL_USAGE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TYPICAL_THERMAL_FUEL_USAGE
+		dataType: double
+		sourceProviderType: decimal(38, 0)
+		lineageTag: 3e001f55-6c18-4eb2-9e16-e0d859763c68
+		summarizeBy: sum
+		sourceColumn: TYPICAL_THERMAL_FUEL_USAGE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TYPICAL_ELECTRICAL_FUEL_USAGE
+		dataType: double
+		sourceProviderType: decimal(38, 0)
+		lineageTag: 29673e36-f53e-4b34-9bf1-695ea49acd74
+		summarizeBy: sum
+		sourceColumn: TYPICAL_ELECTRICAL_FUEL_USAGE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SPECIAL_ENERGY_USES
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: fdfe592b-48f5-4791-adb6-a5e129991987
+		summarizeBy: none
+		sourceColumn: SPECIAL_ENERGY_USES
+
+		annotation SummarizationSetBy = Automatic
+
+	column OPERATIONAL_RATING_BAND
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 43a908f2-ecda-46d1-9515-ff890d60c5f2
+		summarizeBy: none
+		sourceColumn: OPERATIONAL_RATING_BAND
+
+		annotation SummarizationSetBy = Automatic
+
+	column MAIN_BENCHMARK
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: f0af9fc7-5253-496e-9af6-5f9b0e1cd32e
+		summarizeBy: none
+		sourceColumn: MAIN_BENCHMARK
+
+		annotation SummarizationSetBy = Automatic
+
+	column TOTAL_FLOOR_AREA
+		dataType: double
+		sourceProviderType: decimal(38, 0)
+		lineageTag: 328f69df-ffa9-4093-bf86-10104da3fc0a
+		summarizeBy: sum
+		sourceColumn: TOTAL_FLOOR_AREA
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LODGEMENT_DATE
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 2f0dfecd-63b3-46fd-99bb-9cdd10157f04
+		summarizeBy: none
+		sourceColumn: LODGEMENT_DATE
+
+		variation Variation
+			isDefault
+			relationship: 7d290d61-c4aa-4fec-a2a9-f2347974caf6
+			defaultHierarchy: LocalDateTable_22c84057-d837-4225-884f-2fc8a86ee365.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column NOMINATED_DATE
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 88244eb8-93c0-47ce-b4e5-b63ff8aebedc
+		summarizeBy: none
+		sourceColumn: NOMINATED_DATE
+
+		variation Variation
+			isDefault
+			relationship: c0600cf2-e09e-4f5e-b003-440f4b22b494
+			defaultHierarchy: LocalDateTable_a2c9c601-8833-4243-9840-bb5776325564.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column OR_ASSESSMENT_END_DATE
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 121473f5-a37d-4333-bbb4-5349a69ca5c3
+		summarizeBy: none
+		sourceColumn: OR_ASSESSMENT_END_DATE
+
+		variation Variation
+			isDefault
+			relationship: 506f13de-347a-429d-913b-0938c3dae680
+			defaultHierarchy: LocalDateTable_8cd6e86d-d6e4-44d7-bb60-f4be10c485a7.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column INSPECTION_DATE
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 5e94858a-bf52-48ea-9abf-7eead8e0e457
+		summarizeBy: none
+		sourceColumn: INSPECTION_DATE
+
+		variation Variation
+			isDefault
+			relationship: b2173835-0fb9-4c4a-ac8b-853ce9fed80c
+			defaultHierarchy: LocalDateTable_f6586709-a647-42b1-987d-692365efbe28.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column PROPERTY_IDENTITY_KEY
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 54ae8779-c03b-434c-b21b-182415ed8a84
+		summarizeBy: none
+		sourceColumn: PROPERTY_IDENTITY_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: string
+		lineageTag: e7ea2e99-5ab7-4132-8f46-844812eceb97
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FACT_DISP_ENERGY = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases("gxc83121.us-east-1.snowflakecomputing.com","COMPUTE_WH",[Implementation="2.0"]),
+				    EPC_DB_Database = Source{[Name="EPC_DB",Kind="Database"]}[Data],
+				    PRESENTATION_Schema = EPC_DB_Database{[Name="PRESENTATION",Kind="Schema"]}[Data],
+				    FACT_DISP_ENERGY_Table = PRESENTATION_Schema{[Name="FACT_DISP_ENERGY",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(FACT_DISP_ENERGY_Table,{{"AUDIT_TS", type text}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type", "Month", each if [AUDIT_TS] = "2025-11-03 10:11:33.846 -0800" then "Jan"
+				    else if [AUDIT_TS] = "2025-11-03 10:16:45.355 -0800" then "Feb"
+				    else if [AUDIT_TS] = "2025-11-03 10:29:03.486 -0800" then "Mar"
+				    else if [AUDIT_TS] = "2025-11-03 11:34:38.917 -0800" then "Apr"
+				    else if [AUDIT_TS] = "2025-11-03 12:07:35.208 -0800" then "May"
+				    else null),
+				    #"Removed Columns" = Table.RemoveColumns(#"Added Custom",{"Month"}),
+				    #"Added Custom1" = Table.AddColumn(#"Removed Columns", "Month", each if [AUDIT_TS] = "2025-11-03 10:11:33.846 -0800" then "Jan"
+				    else if [AUDIT_TS] = "2025-11-03 10:16:45.355 -0800" then "Feb"
+				    else if [AUDIT_TS] = "2025-11-03 10:29:03.486 -0800" then "Mar"
+				    else if [AUDIT_TS] = "2025-11-03 11:34:38.917 -0800" then "Apr"
+				    else if [AUDIT_TS] = "2025-11-03 12:07:35.208 -0800" then "May"
+				    else null)
+				in
+				    #"Added Custom1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

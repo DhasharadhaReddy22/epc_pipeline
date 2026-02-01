@@ -1,0 +1,65 @@
+relationship 7d290d61-c4aa-4fec-a2a9-f2347974caf6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FACT_DISP_ENERGY.LODGEMENT_DATE
+	toColumn: LocalDateTable_22c84057-d837-4225-884f-2fc8a86ee365.Date
+
+relationship c0600cf2-e09e-4f5e-b003-440f4b22b494
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FACT_DISP_ENERGY.NOMINATED_DATE
+	toColumn: LocalDateTable_a2c9c601-8833-4243-9840-bb5776325564.Date
+
+relationship 506f13de-347a-429d-913b-0938c3dae680
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FACT_DISP_ENERGY.OR_ASSESSMENT_END_DATE
+	toColumn: LocalDateTable_8cd6e86d-d6e4-44d7-bb60-f4be10c485a7.Date
+
+relationship b2173835-0fb9-4c4a-ac8b-853ce9fed80c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FACT_DISP_ENERGY.INSPECTION_DATE
+	toColumn: LocalDateTable_f6586709-a647-42b1-987d-692365efbe28.Date
+
+relationship aa2ba003-f01b-4548-8c49-0b9270a3e745
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FACT_DOM_ENERGY.AUDIT_TS
+	toColumn: LocalDateTable_7814c385-b26b-49ff-98bd-0da3138a8f80.Date
+
+relationship c03fd586-101c-487b-b075-e7628d20d7b0
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FACT_DOM_ENERGY.INSPECTION_DATE
+	toColumn: LocalDateTable_d44b37e2-fc35-4a95-86ba-5a9dba9b56a6.Date
+
+relationship e5545f98-a843-45ca-b7bb-f47cc54a1e01
+	joinOnDateBehavior: datePartOnly
+	fromColumn: FACT_DOM_ENERGY.LODGEMENT_DATE
+	toColumn: LocalDateTable_e0aa7b35-4dfd-44de-9826-a0126a437baf.Date
+
+relationship 56f41eb0-8fc6-4e3c-af11-9b0cb96ac66c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: KPI_DISP_RECOM.AUDIT_TS
+	toColumn: LocalDateTable_af2d9975-4a0e-4b9f-9be2-76b1f81d6421.Date
+
+relationship acd96fc8-7aac-4ec6-bff3-970352bcaa49
+	joinOnDateBehavior: datePartOnly
+	fromColumn: KPI_DISP_RATING.AUDIT_TS
+	toColumn: LocalDateTable_3077f684-c88e-4524-aab3-c95777532fc1.Date
+
+relationship f7df0d95-d026-40a9-967d-409d5d2485b8
+	joinOnDateBehavior: datePartOnly
+	fromColumn: KPI_DOM_RATING.AUDIT_TS
+	toColumn: LocalDateTable_67a639cd-192b-427e-8cf3-403aa815cdf4.Date
+
+relationship 59f0b1e0-7414-48d4-8d23-5904f162de7a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: KPI_DOM_RECOM.AUDIT_TS
+	toColumn: LocalDateTable_26131a46-503c-419f-a1bb-91d273dd7e92.Date
+
+relationship 5ba4e5b6-767a-4b40-8529-9f2d5149061c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: KPI_NON_DOM_RATING.AUDIT_TS
+	toColumn: LocalDateTable_30cb180a-8be3-4d34-98ef-bea3ca92a5f0.Date
+
+relationship f7f82d75-d93a-492e-aa97-c2fc8f59311a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: KPI_NON_DOM_RECOM.AUDIT_TS
+	toColumn: LocalDateTable_fb9d4fb1-17b2-43c5-9f39-89c8ffb1108d.Date
+

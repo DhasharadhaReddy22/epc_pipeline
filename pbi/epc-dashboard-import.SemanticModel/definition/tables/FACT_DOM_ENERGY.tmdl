@@ -1,0 +1,497 @@
+table FACT_DOM_ENERGY
+	lineageTag: 861ef00a-2d19-44ad-a4d9-498b4a7333e0
+
+	column PROPERTY_IDENTITY_KEY
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: f1258d2d-f024-4103-99e6-6ec4c12fd041
+		summarizeBy: none
+		sourceColumn: PROPERTY_IDENTITY_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column LMK_KEY
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: e964e29d-1524-471c-9540-7685f91c714a
+		summarizeBy: none
+		sourceColumn: LMK_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column AUDIT_TS
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 531e4bcf-1f20-4b41-866b-fe094e05348e
+		summarizeBy: none
+		sourceColumn: AUDIT_TS
+
+		variation Variation
+			isDefault
+			relationship: aa2ba003-f01b-4548-8c49-0b9270a3e745
+			defaultHierarchy: LocalDateTable_7814c385-b26b-49ff-98bd-0da3138a8f80.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column CURRENT_ENERGY_RATING
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: af1a43b7-0931-4267-93d8-8152cb8430f2
+		summarizeBy: none
+		sourceColumn: CURRENT_ENERGY_RATING
+
+		annotation SummarizationSetBy = Automatic
+
+	column POTENTIAL_ENERGY_RATING
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 2e6c3e0a-82f9-49e7-bcea-6927d2fa03d7
+		summarizeBy: none
+		sourceColumn: POTENTIAL_ENERGY_RATING
+
+		annotation SummarizationSetBy = Automatic
+
+	column CURRENT_ENERGY_EFFICIENCY
+		dataType: double
+		sourceProviderType: decimal(38, 0)
+		lineageTag: 54bd000a-2462-4070-847b-51d5c85b216a
+		summarizeBy: sum
+		sourceColumn: CURRENT_ENERGY_EFFICIENCY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column POTENTIAL_ENERGY_EFFICIENCY
+		dataType: double
+		sourceProviderType: decimal(38, 0)
+		lineageTag: bbfa037b-016b-497a-9355-24615f77ff14
+		summarizeBy: sum
+		sourceColumn: POTENTIAL_ENERGY_EFFICIENCY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ENVIRONMENTAL_IMPACT_CURRENT
+		dataType: double
+		sourceProviderType: decimal(38, 0)
+		lineageTag: d9d1f6b8-8142-4583-b601-9e55736f7bda
+		summarizeBy: sum
+		sourceColumn: ENVIRONMENTAL_IMPACT_CURRENT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ENVIRONMENTAL_IMPACT_POTENTIAL
+		dataType: double
+		sourceProviderType: decimal(38, 0)
+		lineageTag: bf0bec6e-0f9d-4c22-a27f-9b18da75e608
+		summarizeBy: sum
+		sourceColumn: ENVIRONMENTAL_IMPACT_POTENTIAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ENERGY_CONSUMPTION_CURRENT
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 50773986-9ffd-4463-8022-588fc39c3c7e
+		summarizeBy: sum
+		sourceColumn: ENERGY_CONSUMPTION_CURRENT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ENERGY_CONSUMPTION_POTENTIAL
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 2962d574-ee46-4b36-8770-1fa5c65fe2fd
+		summarizeBy: sum
+		sourceColumn: ENERGY_CONSUMPTION_POTENTIAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CO2_EMISSIONS_CURRENT
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 58057206-12ed-40e9-957b-2f7705010725
+		summarizeBy: sum
+		sourceColumn: CO2_EMISSIONS_CURRENT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CO2_EMISS_CURR_PER_FLOOR_AREA
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 98fb22a0-8968-4db2-a138-2e23fd1ca443
+		summarizeBy: sum
+		sourceColumn: CO2_EMISS_CURR_PER_FLOOR_AREA
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CO2_EMISSIONS_POTENTIAL
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 6842a086-f690-40fa-aec9-9f232e24dec1
+		summarizeBy: sum
+		sourceColumn: CO2_EMISSIONS_POTENTIAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TOTAL_FLOOR_AREA
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 1a57cdc5-9609-46ab-a1aa-442fa1d5995c
+		summarizeBy: sum
+		sourceColumn: TOTAL_FLOOR_AREA
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LIGHTING_COST_CURRENT
+		dataType: double
+		sourceProviderType: double
+		lineageTag: eccb89ce-d6e0-45a2-8bf2-ad064327e9cb
+		summarizeBy: sum
+		sourceColumn: LIGHTING_COST_CURRENT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LIGHTING_COST_POTENTIAL
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 542e9dde-9cd0-4e7c-8e93-72a0f718b62f
+		summarizeBy: sum
+		sourceColumn: LIGHTING_COST_POTENTIAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column HEATING_COST_CURRENT
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 55c5d670-8708-4a7a-950f-ab165dfbf5e2
+		summarizeBy: sum
+		sourceColumn: HEATING_COST_CURRENT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column HEATING_COST_POTENTIAL
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 017b401a-a80b-4412-956a-7cb5e49562ec
+		summarizeBy: sum
+		sourceColumn: HEATING_COST_POTENTIAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column HOT_WATER_COST_CURRENT
+		dataType: double
+		sourceProviderType: double
+		lineageTag: f7fd6cbd-b751-4986-b078-8c4d5bb5fa76
+		summarizeBy: sum
+		sourceColumn: HOT_WATER_COST_CURRENT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column HOT_WATER_COST_POTENTIAL
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 48e97b5d-2804-49c8-873c-75d522f993ef
+		summarizeBy: sum
+		sourceColumn: HOT_WATER_COST_POTENTIAL
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ENERGY_TARIFF
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: b920abbe-bf00-4f4b-aeff-605b5d8bd7c2
+		summarizeBy: none
+		sourceColumn: ENERGY_TARIFF
+
+		annotation SummarizationSetBy = Automatic
+
+	column MAINS_GAS_FLAG
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: d7671bd9-af92-4b85-98d9-8f671a4b2452
+		summarizeBy: none
+		sourceColumn: MAINS_GAS_FLAG
+
+		annotation SummarizationSetBy = Automatic
+
+	column FLOOR_LEVEL
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: a9848ef4-fe67-40b0-a78a-44d4cd8777ac
+		summarizeBy: none
+		sourceColumn: FLOOR_LEVEL
+
+		annotation SummarizationSetBy = Automatic
+
+	column FLAT_TOP_STOREY
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 8e358be3-87bd-457e-a156-f9604fb26570
+		summarizeBy: none
+		sourceColumn: FLAT_TOP_STOREY
+
+		annotation SummarizationSetBy = Automatic
+
+	column FLAT_STOREY_COUNT
+		dataType: double
+		sourceProviderType: double
+		lineageTag: abdb3916-06da-436d-b19a-7ecc3b568871
+		summarizeBy: sum
+		sourceColumn: FLAT_STOREY_COUNT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MAIN_HEATING_CONTROLS
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 2abb3ecd-f7ea-4d36-93a0-cf9d28445e9b
+		summarizeBy: none
+		sourceColumn: MAIN_HEATING_CONTROLS
+
+		annotation SummarizationSetBy = Automatic
+
+	column MULTI_GLAZE_PROPORTION
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 2814bee3-70ec-4714-925c-a6148df9a996
+		summarizeBy: sum
+		sourceColumn: MULTI_GLAZE_PROPORTION
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLAZED_TYPE
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 6ca2c350-0eb0-4a5b-90ea-7ba45d8868e0
+		summarizeBy: none
+		sourceColumn: GLAZED_TYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column GLAZED_AREA
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: f2fce0ed-86f7-430c-bdb7-b91202856a00
+		summarizeBy: none
+		sourceColumn: GLAZED_AREA
+
+		annotation SummarizationSetBy = Automatic
+
+	column EXTENSION_COUNT
+		dataType: double
+		sourceProviderType: decimal(38, 0)
+		lineageTag: b4c8861e-ad82-40e9-8a4a-5902eee9bb10
+		summarizeBy: sum
+		sourceColumn: EXTENSION_COUNT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column NUMBER_HABITABLE_ROOMS
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 5d8ecac4-2043-40e7-b919-f3fcb608e115
+		summarizeBy: sum
+		sourceColumn: NUMBER_HABITABLE_ROOMS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column NUMBER_HEATED_ROOMS
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 530f5706-8495-4dc7-a960-819adc9390f4
+		summarizeBy: sum
+		sourceColumn: NUMBER_HEATED_ROOMS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LOW_ENERGY_LIGHTING
+		dataType: double
+		sourceProviderType: decimal(38, 0)
+		lineageTag: 31f9131d-9ef4-48e9-9898-8c5242b0a32a
+		summarizeBy: sum
+		sourceColumn: LOW_ENERGY_LIGHTING
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column NUMBER_OPEN_FIREPLACES
+		dataType: double
+		sourceProviderType: decimal(38, 0)
+		lineageTag: 47108651-55bb-4eb0-86e2-6db0c655f652
+		summarizeBy: sum
+		sourceColumn: NUMBER_OPEN_FIREPLACES
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MAIN_FUEL
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 9916355f-8023-4360-9cc8-f792c2277e6c
+		summarizeBy: none
+		sourceColumn: MAIN_FUEL
+
+		annotation SummarizationSetBy = Automatic
+
+	column WIND_TURBINE_COUNT
+		dataType: double
+		sourceProviderType: double
+		lineageTag: fd340132-6273-487f-b915-4625dacdb75e
+		summarizeBy: sum
+		sourceColumn: WIND_TURBINE_COUNT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SOLAR_WATER_HEATING_FLAG
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 0671f748-0c83-4da0-b264-c20a5f1eb97d
+		summarizeBy: none
+		sourceColumn: SOLAR_WATER_HEATING_FLAG
+
+		annotation SummarizationSetBy = Automatic
+
+	column PHOTO_SUPPLY
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 0a9ecc5b-3c35-487d-a67c-7ca7f8be766e
+		summarizeBy: sum
+		sourceColumn: PHOTO_SUPPLY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MECHANICAL_VENTILATION
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: d88326e5-f2ec-4d80-983f-6498144258a7
+		summarizeBy: none
+		sourceColumn: MECHANICAL_VENTILATION
+
+		annotation SummarizationSetBy = Automatic
+
+	column TRANSACTION_TYPE
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 871f963c-b3bc-4449-8e0b-e17844e72576
+		summarizeBy: none
+		sourceColumn: TRANSACTION_TYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column TENURE
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: d66a5bf8-1a51-4d33-a659-3e99268cb4e7
+		summarizeBy: none
+		sourceColumn: TENURE
+
+		annotation SummarizationSetBy = Automatic
+
+	column REPORT_TYPE
+		dataType: double
+		sourceProviderType: decimal(38, 0)
+		lineageTag: d8c03ffa-6e6b-4388-9bb1-5e087b60f727
+		summarizeBy: sum
+		sourceColumn: REPORT_TYPE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column INSPECTION_DATE
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 62208603-9674-4be9-8589-9c2030db49a3
+		summarizeBy: none
+		sourceColumn: INSPECTION_DATE
+
+		variation Variation
+			isDefault
+			relationship: c03fd586-101c-487b-b075-e7628d20d7b0
+			defaultHierarchy: LocalDateTable_d44b37e2-fc35-4a95-86ba-5a9dba9b56a6.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column LODGEMENT_DATE
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 172c31c4-903f-4851-a164-f14f2585193b
+		summarizeBy: none
+		sourceColumn: LODGEMENT_DATE
+
+		variation Variation
+			isDefault
+			relationship: e5545f98-a843-45ca-b7bb-f47cc54a1e01
+			defaultHierarchy: LocalDateTable_e0aa7b35-4dfd-44de-9826-a0126a437baf.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition FACT_DOM_ENERGY = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases("gxc83121.us-east-1.snowflakecomputing.com","COMPUTE_WH",[Implementation="2.0"]),
+				    EPC_DB_Database = Source{[Name="EPC_DB",Kind="Database"]}[Data],
+				    PRESENTATION_Schema = EPC_DB_Database{[Name="PRESENTATION",Kind="Schema"]}[Data],
+				    FACT_DOM_ENERGY_Table = PRESENTATION_Schema{[Name="FACT_DOM_ENERGY",Kind="Table"]}[Data]
+				in
+				    FACT_DOM_ENERGY_Table
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

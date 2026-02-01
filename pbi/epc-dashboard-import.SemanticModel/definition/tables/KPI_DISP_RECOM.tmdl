@@ -1,0 +1,106 @@
+table KPI_DISP_RECOM
+	lineageTag: 1a553a3a-8450-4971-bb9c-7b2a2d138091
+
+	column AUDIT_TS
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 84c612b3-d6f6-41f3-825d-2dd82c6a1cb3
+		summarizeBy: none
+		sourceColumn: AUDIT_TS
+
+		variation Variation
+			isDefault
+			relationship: 56f41eb0-8fc6-4e3c-af11-9b0cb96ac66c
+			defaultHierarchy: LocalDateTable_af2d9975-4a0e-4b9f-9be2-76b1f81d6421.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column PAYBACK_TYPE
+		dataType: string
+		sourceProviderType: nvarchar(16777216)
+		lineageTag: 513bf00e-73fb-484c-9337-140cfe93e324
+		summarizeBy: none
+		sourceColumn: PAYBACK_TYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column MONTHLY_AVG_RECOMMENDATIONS_PER_PROPERTY
+		dataType: double
+		sourceProviderType: double
+		lineageTag: cbbe8af5-f3ee-4fd2-a8c6-cf715d3e7e5f
+		summarizeBy: sum
+		sourceColumn: MONTHLY_AVG_RECOMMENDATIONS_PER_PROPERTY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TOTAL_PROPERTIES
+		dataType: double
+		sourceProviderType: decimal(18, 0)
+		lineageTag: 086084bf-1917-416d-9d13-bc15f65c4ca8
+		summarizeBy: sum
+		sourceColumn: TOTAL_PROPERTIES
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TOTAL_RECOMMENDATIONS
+		dataType: double
+		sourceProviderType: decimal(18, 0)
+		lineageTag: 211f22dd-3c5b-4fae-94ce-1a1e80674d70
+		summarizeBy: sum
+		sourceColumn: TOTAL_RECOMMENDATIONS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_AVG_RECOMMENDATIONS_PER_PROPERTY
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 2f63e489-0cca-4a17-88b8-1241f3db69bd
+		summarizeBy: sum
+		sourceColumn: GLOBAL_AVG_RECOMMENDATIONS_PER_PROPERTY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_TOTAL_PROPERTIES
+		dataType: double
+		sourceProviderType: decimal(18, 0)
+		lineageTag: a1257c96-bd3a-4c39-bbc4-82d7f28e069d
+		summarizeBy: sum
+		sourceColumn: GLOBAL_TOTAL_PROPERTIES
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_TOTAL_RECOMMENDATIONS
+		dataType: double
+		sourceProviderType: decimal(18, 0)
+		lineageTag: a3421025-1250-4051-8e00-df0afac838c5
+		summarizeBy: sum
+		sourceColumn: GLOBAL_TOTAL_RECOMMENDATIONS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition KPI_DISP_RECOM = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases("gxc83121.us-east-1.snowflakecomputing.com","COMPUTE_WH",[Implementation="2.0"]),
+				    EPC_DB_Database = Source{[Name="EPC_DB",Kind="Database"]}[Data],
+				    PRESENTATION_Schema = EPC_DB_Database{[Name="PRESENTATION",Kind="Schema"]}[Data],
+				    KPI_DISP_RECOM_Table = PRESENTATION_Schema{[Name="KPI_DISP_RECOM",Kind="Table"]}[Data]
+				in
+				    KPI_DISP_RECOM_Table
+
+	annotation PBI_ResultType = Table
+

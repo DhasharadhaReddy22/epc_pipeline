@@ -1,0 +1,229 @@
+table KPI_NON_DOM_RATING
+	lineageTag: bf07a603-2575-4e76-938f-8ab35040e17a
+
+	column AUDIT_TS
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 6da269df-86f4-47c9-b0f5-4c995177dd7e
+		summarizeBy: none
+		sourceColumn: AUDIT_TS
+
+		variation Variation
+			isDefault
+			relationship: 5ba4e5b6-767a-4b40-8529-9f2d5149061c
+			defaultHierarchy: LocalDateTable_30cb180a-8be3-4d34-98ef-bea3ca92a5f0.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column MONTHLY_AVG_ASSET_RATING
+		dataType: double
+		sourceProviderType: decimal(38, 2)
+		lineageTag: 10baa7d9-f734-4842-853a-1da5c1d5355b
+		summarizeBy: sum
+		sourceColumn: MONTHLY_AVG_ASSET_RATING
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PCT_HIGH_BAND
+		dataType: double
+		sourceProviderType: decimal(23, 2)
+		lineageTag: f35eb09c-8f67-4562-a936-2f01c16c15b4
+		summarizeBy: sum
+		sourceColumn: PCT_HIGH_BAND
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MONTHLY_AVG_EMISSIONS_PER_M2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 55ab8a6d-05c6-4fb4-9ad3-05aebc4c5345
+		summarizeBy: sum
+		sourceColumn: MONTHLY_AVG_EMISSIONS_PER_M2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MONTHLY_WEIGHTED_EMISSIONS_PER_M2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: e7c86a54-6ec3-4682-ac2c-46a5eba6dd18
+		summarizeBy: sum
+		sourceColumn: MONTHLY_WEIGHTED_EMISSIONS_PER_M2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column AVG_GAP_VS_TARGET
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 13ead510-c6af-482a-86c5-cf82a8f8f8e8
+		summarizeBy: sum
+		sourceColumn: AVG_GAP_VS_TARGET
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column AVG_GAP_VS_STANDARD
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 386230b8-88d2-4c70-8fb8-577ea0820134
+		summarizeBy: sum
+		sourceColumn: AVG_GAP_VS_STANDARD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MONTHLY_AVG_PRIMARY_ENERGY_VALUE
+		dataType: double
+		sourceProviderType: decimal(38, 2)
+		lineageTag: ed185333-5c52-4580-ae8a-6bc9fd0ff88f
+		summarizeBy: sum
+		sourceColumn: MONTHLY_AVG_PRIMARY_ENERGY_VALUE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PCT_WITH_AIRCON
+		dataType: double
+		sourceProviderType: decimal(23, 2)
+		lineageTag: 8f252805-7bce-4cbb-8955-ca5925edae3a
+		summarizeBy: sum
+		sourceColumn: PCT_WITH_AIRCON
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DISTINCT_BUILDING_ENVIRONMENTS
+		dataType: double
+		sourceProviderType: decimal(18, 0)
+		lineageTag: f6447876-6359-4ad5-943c-f87b1c429676
+		summarizeBy: sum
+		sourceColumn: DISTINCT_BUILDING_ENVIRONMENTS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_AVG_ASSET_RATING
+		dataType: double
+		sourceProviderType: decimal(38, 2)
+		lineageTag: f0aa0132-fd3b-491f-8a90-fa6140b4bf6d
+		summarizeBy: sum
+		sourceColumn: GLOBAL_AVG_ASSET_RATING
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_PCT_HIGH_BAND
+		dataType: double
+		sourceProviderType: decimal(23, 2)
+		lineageTag: f56d0c15-eda2-4886-a8bd-992cb7971aa2
+		summarizeBy: sum
+		sourceColumn: GLOBAL_PCT_HIGH_BAND
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_AVG_EMISSIONS_PER_M2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 93cbfb62-6aae-4d55-9a9f-d3b895b39975
+		summarizeBy: sum
+		sourceColumn: GLOBAL_AVG_EMISSIONS_PER_M2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_WEIGHTED_EMISSIONS_PER_M2
+		dataType: double
+		sourceProviderType: double
+		lineageTag: cb8dd00f-fc92-4f00-81ac-f62b66f605d2
+		summarizeBy: sum
+		sourceColumn: GLOBAL_WEIGHTED_EMISSIONS_PER_M2
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_AVG_GAP_VS_TARGET
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 2f335425-7590-4468-a3c2-64095a046454
+		summarizeBy: sum
+		sourceColumn: GLOBAL_AVG_GAP_VS_TARGET
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_AVG_GAP_VS_STANDARD
+		dataType: double
+		sourceProviderType: double
+		lineageTag: 1a9113f0-93ab-4bce-9aa2-e85044e8705a
+		summarizeBy: sum
+		sourceColumn: GLOBAL_AVG_GAP_VS_STANDARD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_AVG_PRIMARY_ENERGY_VALUE
+		dataType: double
+		sourceProviderType: decimal(38, 2)
+		lineageTag: 4e4ef074-a5d8-4b9f-944d-dc4427e05266
+		summarizeBy: sum
+		sourceColumn: GLOBAL_AVG_PRIMARY_ENERGY_VALUE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_PCT_WITH_AIRCON
+		dataType: double
+		sourceProviderType: decimal(23, 2)
+		lineageTag: daa61776-8e09-405b-87c0-f5874ea9e279
+		summarizeBy: sum
+		sourceColumn: GLOBAL_PCT_WITH_AIRCON
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GLOBAL_DISTINCT_BUILDING_ENVIRONMENTS
+		dataType: double
+		sourceProviderType: decimal(18, 0)
+		lineageTag: 28fe49c9-0233-4dd4-b5ab-ae9005fa0a28
+		summarizeBy: sum
+		sourceColumn: GLOBAL_DISTINCT_BUILDING_ENVIRONMENTS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition KPI_NON_DOM_RATING = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases("gxc83121.us-east-1.snowflakecomputing.com","COMPUTE_WH",[Implementation="2.0"]),
+				    EPC_DB_Database = Source{[Name="EPC_DB",Kind="Database"]}[Data],
+				    PRESENTATION_Schema = EPC_DB_Database{[Name="PRESENTATION",Kind="Schema"]}[Data],
+				    KPI_NON_DOM_RATING_Table = PRESENTATION_Schema{[Name="KPI_NON_DOM_RATING",Kind="Table"]}[Data]
+				in
+				    KPI_NON_DOM_RATING_Table
+
+	annotation PBI_ResultType = Table
+

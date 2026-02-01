@@ -1,0 +1,39 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-IN
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["FACT_DISP_ENERGY","FACT_DOM_ENERGY","KPI_DISP_RECOM","KPI_DISP_RATING","KPI_DOM_RATING","KPI_DOM_RECOM","KPI_NON_DOM_RATING","KPI_NON_DOM_RECOM"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table FACT_DISP_ENERGY
+ref table FACT_DOM_ENERGY
+ref table KPI_DISP_RECOM
+ref table KPI_DISP_RATING
+ref table KPI_DOM_RATING
+ref table KPI_DOM_RECOM
+ref table KPI_NON_DOM_RATING
+ref table KPI_NON_DOM_RECOM
+ref table DateTableTemplate_070d4741-7ee2-4fd0-8b5f-3a433426ab9a
+ref table LocalDateTable_22c84057-d837-4225-884f-2fc8a86ee365
+ref table LocalDateTable_a2c9c601-8833-4243-9840-bb5776325564
+ref table LocalDateTable_8cd6e86d-d6e4-44d7-bb60-f4be10c485a7
+ref table LocalDateTable_f6586709-a647-42b1-987d-692365efbe28
+ref table LocalDateTable_7814c385-b26b-49ff-98bd-0da3138a8f80
+ref table LocalDateTable_d44b37e2-fc35-4a95-86ba-5a9dba9b56a6
+ref table LocalDateTable_e0aa7b35-4dfd-44de-9826-a0126a437baf
+ref table LocalDateTable_af2d9975-4a0e-4b9f-9be2-76b1f81d6421
+ref table LocalDateTable_3077f684-c88e-4524-aab3-c95777532fc1
+ref table LocalDateTable_67a639cd-192b-427e-8cf3-403aa815cdf4
+ref table LocalDateTable_26131a46-503c-419f-a1bb-91d273dd7e92
+ref table LocalDateTable_30cb180a-8be3-4d34-98ef-bea3ca92a5f0
+ref table LocalDateTable_fb9d4fb1-17b2-43c5-9f39-89c8ffb1108d
+
+ref cultureInfo en-US
+

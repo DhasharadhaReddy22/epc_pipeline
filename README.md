@@ -1,4 +1,4 @@
-# Monthly EPC Pipeline
+# Energy Performance Pipeline
 
 This README documents the Monthly EPC Data Engineering Pipeline built with **Airflow**, **AWS S3**, **Snowflake**, **DBT**, and **Power BI**.
 
